@@ -9,13 +9,24 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client
   }),
-  emailAndPassword: { 
-    enabled: true, 
-  }, 
-  socialProviders: { 
-    github: { 
-      clientId: process.env.GITHUB_CLIENT, 
-      clientSecret: process.env.GITHUB_CLIENT_SECRET, 
-    }, 
+  emailAndPassword: {
+    enabled: true,
   },
-});
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    },
+  },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: "Tenant",
+        input: true,
+      },
+    }
+  },
+}
+);

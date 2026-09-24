@@ -124,6 +124,7 @@ const RegisterPage = () => {
                 email: formData.email.trim(),
                 password: formData.password,
                 image: formData.image.trim(),
+                role: formData.role,
                 callbackURL: "/",
             });
             if (error) {
@@ -137,31 +138,6 @@ const RegisterPage = () => {
             if (!data?.user) {
                 setErrorMessage(
                     "Account creation was unsuccessful. Please try again."
-                );
-
-                return;
-            }
-            const roleResponse = await fetch("/api/users/set-role", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    role: formData.role,
-                }),
-            });
-
-            const roleResult = await roleResponse.json();
-
-            if (!roleResponse.ok) {
-                console.error(
-                    "Role assignment error:",
-                    roleResult
-                );
-
-                setErrorMessage(
-                    roleResult.message ||
-                        "Your account was created, but the account type could not be saved."
                 );
 
                 return;

@@ -9,7 +9,6 @@ import { Button, Dropdown, Label } from "@heroui/react";
 import {
     FiMenu,
     FiX,
-    FiHeart,
     FiUser,
     FiLogIn,
     FiLogOut,
@@ -17,13 +16,21 @@ import {
     FiArrowUpRight,
 } from "react-icons/fi";
 
+import { authClient } from "@/lib/auth-client";
+
 const Navbar = () => {
     const pathname = usePathname();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const isLoggedIn = false;
-    const userRole = "Tenant";
 
+    // Better Auth session
+    const { data: session } = authClient.useSession();
+
+    const user = session?.user;
+    const role = user?.role;
+    const isLoggedIn = !!user;
+
+    // Public navigation links
     const publicLinks = [
         {
             name: "Home",
@@ -43,7 +50,6 @@ const Navbar = () => {
         },
     ];
 
-
     const isActive = (href) => {
         if (href === "/") {
             return pathname === "/";
@@ -56,9 +62,18 @@ const Navbar = () => {
         setIsMenuOpen(false);
     };
 
+    // Better Auth logout
+    const handleLogout = async () => {
+        await authClient.signOut();
+        closeMobileMenu();
+    };
+
     return (
         <>
-            <nav suppressHydrationWarning className="sticky top-0 z-50 w-full border-b border-black/10 bg-[#FDFCF9]/95 backdrop-blur-md">
+            <nav
+                suppressHydrationWarning
+                className="sticky top-0 z-50 w-full border-b border-black/10 bg-[#FDFCF9]/95 backdrop-blur-md"
+            >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* =====================================================
@@ -109,21 +124,14 @@ const Navbar = () => {
                             </span>
                         </Link>
 
-                        {/* Right Desktop Actions */}
+                        {/* =================================================
+                            RIGHT DESKTOP ACTIONS
+                        ================================================= */}
                         <div className="ml-auto hidden items-center gap-2 lg:flex">
-
-                            {isLoggedIn && (
-                                <Link
-                                    href="/dashboard/tenant/favorites"
-                                    className="group flex h-10 w-10 items-center justify-center border border-transparent transition hover:border-black/10"
-                                    aria-label="Favorites"
-                                >
-                                    <FiHeart className="text-[17px] transition-transform duration-300 group-hover:scale-110" />
-                                </Link>
-                            )}
 
                             {!isLoggedIn ? (
                                 <>
+                                    {/* Sign In */}
                                     <Link
                                         href="/login"
                                         className="px-4 py-2 font-sans text-[10px] uppercase tracking-[0.22em] text-[#1A1A1A] transition hover:text-[#8A6E68]"
@@ -131,6 +139,7 @@ const Navbar = () => {
                                         Sign In
                                     </Link>
 
+                                    {/* Join */}
                                     <Link href="/register">
                                         <Button
                                             variant="primary"
@@ -142,39 +151,56 @@ const Navbar = () => {
                                     </Link>
                                 </>
                             ) : (
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                        <Button
-                                            variant="ghost"
-                                            className="rounded-none px-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#1A1A1A]"
-                                        >
-                                            <FiUser className="text-sm" />
-                                            Account
-                                            <FiChevronDown className="text-xs" />
-                                        </Button>
-                                    </Dropdown.Trigger>
+                                <>
+                                    {/* Account */}
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <Button
+                                                variant="ghost"
+                                                className="rounded-none px-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#1A1A1A]"
+                                            >
+                                                <FiUser className="text-sm" />
 
-                                    <Dropdown.Popover className="min-w-[220px] rounded-none border border-black/10 bg-[#FDFCF9] shadow-none">
-                                        <Dropdown.Menu>
-                                            {roleLinks.map((item) => (
+                                                Account
+
+                                                <FiChevronDown className="text-xs" />
+                                            </Button>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Popover className="min-w-[220px] rounded-none border border-black/10 bg-[#FDFCF9] shadow-none">
+                                            <Dropdown.Menu>
+
+                                                {/* User Information */}
                                                 <Dropdown.Item
-                                                    key={item.href}
-                                                    id={item.href}
-                                                    textValue={item.name}
+                                                    id="account-info"
+                                                    textValue="Account"
+                                                    className="cursor-default"
                                                 >
-                                                    <Link
-                                                        href={item.href}
-                                                        className="block w-full"
-                                                    >
-                                                        <Label className="font-sans text-xs uppercase tracking-[0.15em]">
-                                                            {item.name}
-                                                        </Label>
-                                                    </Link>
+                                                    <div className="flex flex-col">
+                                                        <span className="font-serif text-base text-[#1A1A1A]">
+                                                            {user?.name || "Account"}
+                                                        </span>
+
+                                                        <span className="mt-1 font-sans text-[9px] tracking-[0.08em] text-[#77716D]">
+                                                            {user?.email}
+                                                        </span>
+                                                    </div>
                                                 </Dropdown.Item>
-                                            ))}
-                                        </Dropdown.Menu>
-                                    </Dropdown.Popover>
-                                </Dropdown>
+
+                                            </Dropdown.Menu>
+                                        </Dropdown.Popover>
+                                    </Dropdown>
+
+                                    {/* Logout beside Account */}
+                                    <Button
+                                        variant="ghost"
+                                        onPress={handleLogout}
+                                        className="rounded-none px-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#1A1A1A] transition hover:text-[#8A6E68]"
+                                    >
+                                        <FiLogOut className="text-sm" />
+                                        Logout
+                                    </Button>
+                                </>
                             )}
                         </div>
                     </div>
@@ -186,6 +212,7 @@ const Navbar = () => {
                         <div className="flex min-h-[52px] items-center justify-center">
                             <ul className="flex items-center gap-8 xl:gap-11">
 
+                                {/* Public Links */}
                                 {publicLinks.map((item) => (
                                     <li key={item.href}>
                                         <Link
@@ -209,92 +236,48 @@ const Navbar = () => {
                                     </li>
                                 ))}
 
-                                {/* Role-specific Dashboard */}
+                                {/* Dashboard - ONLY WHEN LOGGED IN */}
                                 {isLoggedIn && (
                                     <li>
-                                        <Dropdown>
-                                            <Dropdown.Trigger>
-                                                <Button
-                                                    variant="ghost"
-                                                    className={`rounded-none px-0 py-4 font-sans text-[10px] uppercase tracking-[0.24em] ${
-                                                        pathname.startsWith(
-                                                            "/dashboard"
-                                                        )
-                                                            ? "text-[#8A6E68]"
-                                                            : "text-[#33302E]"
-                                                    }`}
-                                                >
-                                                    Dashboard
-                                                    <FiChevronDown className="ml-1 text-xs" />
-                                                </Button>
-                                            </Dropdown.Trigger>
+                                        <Link
+                                            href="/dashboard"
+                                            className={`group relative flex items-center gap-1 py-4 font-sans text-[10px] uppercase tracking-[0.24em] transition ${
+                                                pathname.startsWith("/dashboard")
+                                                    ? "text-[#8A6E68]"
+                                                    : "text-[#33302E] hover:text-[#8A6E68]"
+                                            }`}
+                                        >
+                                            Dashboard
 
-                                            <Dropdown.Popover className="min-w-[240px] rounded-none border border-black/10 bg-[#FDFCF9] shadow-none">
-                                                <Dropdown.Menu>
-                                                    <div className="border-b border-black/10 px-4 py-3">
-                                                        <p className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#8A6E68]">
-                                                            {userRole} Space
-                                                        </p>
+                                            <FiArrowUpRight className="text-xs" />
 
-                                                        <p className="mt-1 font-serif text-lg text-[#1A1A1A]">
-                                                            Your Workspace
-                                                        </p>
-                                                    </div>
-
-                                                    {roleLinks.map((item) => (
-                                                        <Dropdown.Item
-                                                            key={item.href}
-                                                            id={item.href}
-                                                            textValue={item.name}
-                                                        >
-                                                            <Link
-                                                                href={item.href}
-                                                                className="flex w-full items-center justify-between"
-                                                            >
-                                                                <Label className="font-sans text-xs uppercase tracking-[0.14em]">
-                                                                    {item.name}
-                                                                </Label>
-
-                                                                <FiArrowUpRight className="text-xs" />
-                                                            </Link>
-                                                        </Dropdown.Item>
-                                                    ))}
-                                                </Dropdown.Menu>
-                                            </Dropdown.Popover>
-                                        </Dropdown>
+                                            <span
+                                                className={`absolute bottom-0 left-0 h-px bg-[#8A6E68] transition-all duration-300 ${
+                                                    pathname.startsWith("/dashboard")
+                                                        ? "w-full"
+                                                        : "w-0 group-hover:w-full"
+                                                }`}
+                                            />
+                                        </Link>
                                     </li>
                                 )}
 
-                                {/* Login/Register or Logout */}
-                                {!isLoggedIn ? (
+                                {/* Login - ONLY WHEN LOGGED OUT */}
+                                {!isLoggedIn && (
                                     <li>
                                         <Link
                                             href="/login"
                                             className="group relative flex items-center gap-1 py-4 font-sans text-[10px] uppercase tracking-[0.24em] text-[#33302E] transition hover:text-[#8A6E68]"
                                         >
                                             Login
+
                                             <FiLogIn className="text-xs" />
 
                                             <span className="absolute bottom-0 left-0 h-px w-0 bg-[#8A6E68] transition-all duration-300 group-hover:w-full" />
                                         </Link>
                                     </li>
-                                ) : (
-                                    <li>
-                                        <button
-                                            type="button"
-                                            className="group relative flex items-center gap-1 py-4 font-sans text-[10px] uppercase tracking-[0.24em] text-[#33302E] transition hover:text-[#8A6E68]"
-                                            onClick={() => {
-                                                // Replace this with your real logout function.
-                                                console.log("Logout");
-                                            }}
-                                        >
-                                            Logout
-                                            <FiLogOut className="text-xs" />
-
-                                            <span className="absolute bottom-0 left-0 h-px w-0 bg-[#8A6E68] transition-all duration-300 group-hover:w-full" />
-                                        </button>
-                                    </li>
                                 )}
+
                             </ul>
                         </div>
                     </div>
@@ -327,6 +310,7 @@ const Navbar = () => {
 
                             {/* Main Links */}
                             <div className="space-y-1">
+
                                 {publicLinks.map((item, index) => (
                                     <Link
                                         key={item.href}
@@ -342,6 +326,7 @@ const Navbar = () => {
                                             }`}
                                         >
                                             {String(index + 1).padStart(2, "0")}
+
                                             <span className="ml-4">
                                                 {item.name}
                                             </span>
@@ -350,12 +335,41 @@ const Navbar = () => {
                                         <FiArrowUpRight className="text-lg text-[#8A6E68] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                                     </Link>
                                 ))}
+
+                                {/* Dashboard - ONLY WHEN LOGGED IN */}
+                                {isLoggedIn && (
+                                    <Link
+                                        href="/dashboard"
+                                        onClick={closeMobileMenu}
+                                        className="group flex items-center justify-between border-b border-black/10 py-4"
+                                    >
+                                        <span
+                                            className={`font-serif text-2xl ${
+                                                pathname.startsWith("/dashboard")
+                                                    ? "text-[#8A6E68]"
+                                                    : "text-[#1A1A1A]"
+                                            }`}
+                                        >
+                                            05
+
+                                            <span className="ml-4">
+                                                Dashboard
+                                            </span>
+                                        </span>
+
+                                        <FiArrowUpRight className="text-lg text-[#8A6E68] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+                                    </Link>
+                                )}
+
                             </div>
 
-                            {/* Account Section */}
+                            {/* =================================================
+                                MOBILE ACCOUNT SECTION
+                            ================================================= */}
                             <div className="mt-8 border-t border-black/10 pt-7">
 
                                 {!isLoggedIn ? (
+                                    /* LOGGED OUT */
                                     <div className="grid grid-cols-2 gap-3">
 
                                         <Link
@@ -387,53 +401,54 @@ const Navbar = () => {
 
                                     </div>
                                 ) : (
+                                    /* LOGGED IN */
                                     <div>
 
+                                        {/* User Info */}
                                         <div className="mb-4 flex items-center justify-between">
-                                            <div>
+                                            <div className="min-w-0">
                                                 <p className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#8A6E68]">
                                                     Signed in as
                                                 </p>
 
-                                                <p className="mt-1 font-serif text-xl text-[#1A1A1A]">
-                                                    {userRole}
+                                                <p className="mt-1 truncate font-serif text-xl text-[#1A1A1A]">
+                                                    {user?.name || user?.email}
                                                 </p>
+
+                                                {user?.name && (
+                                                    <p className="mt-1 truncate font-sans text-[9px] tracking-[0.08em] text-[#77716D]">
+                                                        {user?.email}
+                                                    </p>
+                                                )}
                                             </div>
 
-                                            <FiUser className="text-xl" />
+                                            <FiUser className="ml-4 shrink-0 text-xl" />
                                         </div>
 
-                                        <div className="space-y-1">
-                                            {roleLinks.map((item) => (
-                                                <Link
-                                                    key={item.href}
-                                                    href={item.href}
-                                                    onClick={closeMobileMenu}
-                                                    className="flex items-center justify-between border-b border-black/10 py-3"
-                                                >
-                                                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#33302E]">
-                                                        {item.name}
-                                                    </span>
+                                        {/* Dashboard */}
+                                        <Link
+                                            href="/dashboard"
+                                            onClick={closeMobileMenu}
+                                            className="flex w-full items-center justify-between border-b border-black/10 py-3 font-sans text-[10px] uppercase tracking-[0.2em] text-[#33302E]"
+                                        >
+                                            <span>Dashboard</span>
 
-                                                    <FiArrowUpRight className="text-sm text-[#8A6E68]" />
-                                                </Link>
-                                            ))}
-                                        </div>
+                                            <FiArrowUpRight className="text-sm text-[#8A6E68]" />
+                                        </Link>
 
+                                        {/* Logout */}
                                         <button
                                             type="button"
-                                            onClick={() => {
-                                                // Replace this with your actual logout function.
-                                                console.log("Logout");
-                                                closeMobileMenu();
-                                            }}
-                                            className="mt-6 flex w-full items-center justify-center gap-2 border border-black/20 py-3 font-sans text-[10px] uppercase tracking-[0.2em] text-[#1A1A1A]"
+                                            onClick={handleLogout}
+                                            className="mt-6 flex w-full items-center justify-center gap-2 border border-black/20 py-3 font-sans text-[10px] uppercase tracking-[0.2em] text-[#1A1A1A] transition hover:border-[#8A6E68] hover:text-[#8A6E68]"
                                         >
                                             <FiLogOut />
                                             Logout
                                         </button>
+
                                     </div>
                                 )}
+
                             </div>
                         </div>
                     </div>
