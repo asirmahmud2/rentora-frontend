@@ -1,0 +1,1023 @@
+[
+  {
+    "title": "Elegant Gulshan Lake Residence",
+    "description": "A refined modern apartment in a quiet residential pocket of Gulshan with easy access to Gulshan Avenue, Banani and nearby business districts.",
+    "location": {
+      "area": "Gulshan-2",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 85000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "propertySize": 1850,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "High-speed WiFi",
+      "Air Conditioning",
+      "Generator Backup",
+      "Elevator",
+      "Parking",
+      "Security",
+      "Balcony",
+      "Dining Space"
+    ],
+    "images": [
+      "https://i.ibb.co.com/GvgkZfL9/Modern-apartment-living-room-int-20260924130245.jpg"
+    ],
+    "extraFeatures": [
+      "Lake-side neighborhood",
+      "24/7 security",
+      "Dedicated parking",
+      "Large windows",
+      "Modern kitchen",
+      "Servant room"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-001",
+      "name": "Fahim Rahman",
+      "email": "fahim.rahman@example.com",
+      "phone": "+8801711000001",
+      "photo": "/images/owners/fahim.jpg"
+    }
+  },
+  {
+    "title": "Banani Contemporary Family Home",
+    "description": "A bright family-friendly apartment in Banani with spacious living areas and convenient access to restaurants, offices and daily amenities.",
+    "location": {
+      "area": "Banani",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 70000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "propertySize": 1650,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Air Conditioning",
+      "Elevator",
+      "Parking",
+      "Security",
+      "Generator Backup",
+      "Balcony",
+      "Kitchen",
+      "WiFi"
+    ],
+    "images": [
+      "https://i.ibb.co.com/G4BbYW24/Apartment-interior-with-balcony-20260924131541.jpg"
+    ],
+    "extraFeatures": [
+      "South-facing balcony",
+      "Built-in wardrobes",
+      "Modern kitchen",
+      "Visitor parking",
+      "24/7 caretaker"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-002",
+      "name": "Nusrat Jahan",
+      "email": "nusrat.jahan@example.com",
+      "phone": "+8801711000002",
+      "photo": "/images/owners/nusrat.jpg"
+    }
+  },
+  {
+    "title": "Dhanmondi Garden Apartment",
+    "description": "A peaceful apartment surrounded by established residential streets and greenery in Dhanmondi, suitable for a small family.",
+    "location": {
+      "area": "Dhanmondi",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 55000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1450,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Balcony",
+      "Elevator",
+      "Security",
+      "Air Conditioning",
+      "Parking",
+      "Generator Backup",
+      "Water Supply"
+    ],
+    "images": [
+      "https://i.ibb.co.com/DfDHTfHN/Master-bedroom-interior-design-20260924131846.jpg"
+    ],
+    "extraFeatures": [
+      "Green neighborhood",
+      "Near schools",
+      "Family-friendly",
+      "Wide windows",
+      "Separate dining area"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-003",
+      "name": "Tareq Hasan",
+      "email": "tareq.hasan@example.com",
+      "phone": "+8801711000003",
+      "photo": "/images/owners/tareq.jpg"
+    }
+  },
+  {
+    "title": "Uttara Airport View Residence",
+    "description": "A spacious modern apartment in Sector 10 of Uttara with excellent road connectivity and practical family-oriented facilities.",
+    "location": {
+      "area": "Uttara Sector 10",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 42000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1500,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Elevator",
+      "Parking",
+      "Security",
+      "Generator Backup",
+      "Balcony",
+      "Air Conditioning",
+      "WiFi",
+      "Kitchen"
+    ],
+    "images": [
+      "https://i.ibb.co.com/fPR9cxK/Sunlit-apartment-dining-area-20260924132045.jpg"
+    ],
+    "extraFeatures": [
+      "Near airport",
+      "Wide road",
+      "Family neighborhood",
+      "Large bedrooms",
+      "Natural ventilation"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-004",
+      "name": "Mahin Chowdhury",
+      "email": "mahin.chowdhury@example.com",
+      "phone": "+8801711000004",
+      "photo": "/images/owners/mahin.jpg"
+    }
+  },
+  {
+    "title": "Bashundhara Executive Apartment",
+    "description": "An upscale apartment in Bashundhara Residential Area with a calm neighborhood atmosphere and convenient access to universities and commercial areas.",
+    "location": {
+      "area": "Bashundhara Residential Area",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 60000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "propertySize": 1750,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Parking",
+      "Elevator",
+      "Security",
+      "Generator Backup",
+      "Balcony",
+      "Air Conditioning",
+      "WiFi",
+      "Intercom"
+    ],
+    "images": [
+      "https://i.ibb.co.com/LdSJGYTF/Modern-apartment-building-exteri-20260924132252.jpg"
+    ],
+    "extraFeatures": [
+      "Near North South University",
+      "Modern kitchen",
+      "Master bedroom balcony",
+      "24/7 security",
+      "Visitor parking"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-005",
+      "name": "Sadia Karim",
+      "email": "sadia.karim@example.com",
+      "phone": "+8801711000005",
+      "photo": "/images/owners/sadia.jpg"
+    }
+  },
+  {
+    "title": "Mirpur Modern City Flat",
+    "description": "A practical modern apartment in Mirpur with comfortable rooms, excellent natural light and convenient access to public transportation.",
+    "location": {
+      "area": "Mirpur-12",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 30000,
+    "rentType": "Monthly",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1050,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Elevator",
+      "Security",
+      "Balcony",
+      "Water Supply",
+      "Parking",
+      "Air Conditioning",
+      "Kitchen"
+    ],
+    "images": [
+      "https://i.ibb.co.com/KkS11vQ/Modern-executive-apartment-home-20260924132311.jpg"
+    ],
+    "extraFeatures": [
+      "Affordable premium apartment",
+      "Bright interiors",
+      "Near public transport",
+      "Built-in cabinets"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-006",
+      "name": "Rafiul Islam",
+      "email": "rafiul.islam@example.com",
+      "phone": "+8801711000006",
+      "photo": "/images/owners/rafiul.jpg"
+    }
+  },
+  {
+    "title": "Mohammadpur Family Residence",
+    "description": "A warm and spacious family apartment located in a peaceful section of Mohammadpur with convenient access to schools and shopping areas.",
+    "location": {
+      "area": "Mohammadpur",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 35000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1300,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Balcony",
+      "Parking",
+      "Security",
+      "Elevator",
+      "Water Supply",
+      "Generator Backup"
+    ],
+    "images": [
+      "https://i.ibb.co.com/dsMMCzMF/Compact-modern-apartment-kitchen-20260924132403.jpg"
+    ],
+    "extraFeatures": [
+      "Family-friendly neighborhood",
+      "Separate dining room",
+      "Large kitchen",
+      "Good ventilation",
+      "Near educational institutions"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-007",
+      "name": "Arman Hossain",
+      "email": "arman.hossain@example.com",
+      "phone": "+8801711000007",
+      "photo": "/images/owners/arman.jpg"
+    }
+  },
+  {
+    "title": "Khulshi Hillside Retreat",
+    "description": "A premium residence in Khulshi, Chattogram featuring generous living spaces, balconies and a quiet elevated neighborhood environment.",
+    "location": {
+      "area": "Khulshi",
+      "city": "Chattogram",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 50000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "propertySize": 1700,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Parking",
+      "Elevator",
+      "Security",
+      "Generator Backup",
+      "Balcony",
+      "Air Conditioning",
+      "WiFi"
+    ],
+    "images": [
+      "https://i.ibb.co.com/35dX7Tn0/Living-room-with-wooden-bookshelf-20260924132605.jpg"
+    ],
+    "extraFeatures": [
+      "Elevated neighborhood",
+      "Hill view",
+      "Large balcony",
+      "Premium kitchen",
+      "24/7 security"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-008",
+      "name": "Nabil Ahmed",
+      "email": "nabil.ahmed@example.com",
+      "phone": "+8801711000008",
+      "photo": "/images/owners/nabil.jpg"
+    }
+  },
+  {
+    "title": "Panchlaish Urban Residence",
+    "description": "A modern three-bedroom apartment in Panchlaish, Chattogram close to hospitals, educational institutions and commercial areas.",
+    "location": {
+      "area": "Panchlaish",
+      "city": "Chattogram",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 38000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1450,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Elevator",
+      "Parking",
+      "Security",
+      "Generator Backup",
+      "Balcony",
+      "Air Conditioning"
+    ],
+    "images": [
+      "https://i.ibb.co.com/ynW3XCFB/Balcony-overlooking-green-hillside-20260924132732.jpg"
+    ],
+    "extraFeatures": [
+      "Near hospitals",
+      "Near schools",
+      "Corner apartment",
+      "Good natural ventilation"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-009",
+      "name": "Shakib Hasan",
+      "email": "shakib.hasan@example.com",
+      "phone": "+8801711000009",
+      "photo": "/images/owners/shakib.jpg"
+    }
+  },
+  {
+    "title": "Nasirabad Premium Flat",
+    "description": "A spacious apartment in Nasirabad with elegant interiors and convenient access to Chattogram city amenities.",
+    "location": {
+      "area": "Nasirabad",
+      "city": "Chattogram",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 32000,
+    "rentType": "Monthly",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1150,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Elevator",
+      "Parking",
+      "Security",
+      "Balcony",
+      "Generator Backup",
+      "Water Supply"
+    ],
+    "images": [
+      "https://i.ibb.co.com/xqvKJd5C/Executive-apartment-living-room-20260924132952.jpg"
+    ],
+    "extraFeatures": [
+      "Modern kitchen",
+      "Quiet street",
+      "Family building",
+      "Bright bedrooms"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-010",
+      "name": "Mehedi Hasan",
+      "email": "mehedi.hasan@example.com",
+      "phone": "+8801711000010",
+      "photo": "/images/owners/mehedi.jpg"
+    }
+  },
+  {
+    "title": "Agrabad Business District Apartment",
+    "description": "A stylish apartment near Agrabad commercial area, ideal for professionals who want to stay close to offices and city services.",
+    "location": {
+      "area": "Agrabad",
+      "city": "Chattogram",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 40000,
+    "rentType": "Monthly",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1200,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "WiFi",
+      "Air Conditioning",
+      "Elevator",
+      "Security",
+      "Parking",
+      "Generator Backup"
+    ],
+    "images": [
+      "https://i.ibb.co.com/hx65wt3n/Reading-corner-in-apartment-20260924133017.jpg"
+    ],
+    "extraFeatures": [
+      "Near commercial district",
+      "Ideal for professionals",
+      "Workspace corner",
+      "Modern furnishings"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-011",
+      "name": "Adnan Kabir",
+      "email": "adnan.kabir@example.com",
+      "phone": "+8801711000011",
+      "photo": "/images/owners/adnan.jpg"
+    }
+  },
+  {
+    "title": "Halishahar Family Apartment",
+    "description": "A spacious and affordable family apartment in Halishahar with practical amenities and easy access to the coastal side of Chattogram.",
+    "location": {
+      "area": "Halishahar",
+      "city": "Chattogram",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 28000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1350,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Balcony",
+      "Elevator",
+      "Security",
+      "Parking",
+      "Water Supply",
+      "Generator Backup"
+    ],
+    "images": [
+      "https://i.ibb.co.com/vxPsv3Fp/Executive-apartment-living-room-20260924133022.jpg"
+    ],
+    "extraFeatures": [
+      "Spacious rooms",
+      "Family neighborhood",
+      "Near schools",
+      "Open surroundings"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-012",
+      "name": "Sabbir Ahmed",
+      "email": "sabbir.ahmed@example.com",
+      "phone": "+8801711000012",
+      "photo": "/images/owners/sabbir.jpg"
+    }
+  },
+  {
+    "title": "Patenga Seaside Holiday Home",
+    "description": "A stylish furnished holiday apartment near Patenga beach, suitable for short family stays and weekend trips.",
+    "location": {
+      "area": "Patenga",
+      "city": "Chattogram",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Holiday Home",
+    "rent": 6500,
+    "rentType": "Daily",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1000,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "WiFi",
+      "Air Conditioning",
+      "Kitchen",
+      "Balcony",
+      "Parking",
+      "Security",
+      "TV"
+    ],
+    "images": [
+      "https://i.ibb.co.com/fd44rKHc/Children-bedroom-rental-apartmen-20260924133033.jpg"
+    ],
+    "extraFeatures": [
+      "Near Patenga Beach",
+      "Fully furnished",
+      "Sea breeze",
+      "Family holiday friendly",
+      "Smart TV"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-013",
+      "name": "Raihan Sarker",
+      "email": "raihan.sarker@example.com",
+      "phone": "+8801711000013",
+      "photo": "/images/owners/raihan.jpg"
+    }
+  },
+  {
+    "title": "Sylhet Zindabazar City Loft",
+    "description": "A stylish furnished city apartment close to Zindabazar, ideal for professionals, couples and visitors looking for a central Sylhet location.",
+    "location": {
+      "area": "Zindabazar",
+      "city": "Sylhet",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 28000,
+    "rentType": "Monthly",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1100,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "WiFi",
+      "Air Conditioning",
+      "Elevator",
+      "Security",
+      "Parking",
+      "Balcony"
+    ],
+    "images": [
+      "https://i.ibb.co.com/pBD1b4sT/Rooftop-terrace-overlooking-coas-20260924133039.jpg"
+    ],
+    "extraFeatures": [
+      "Central location",
+      "Fully furnished",
+      "Modern lighting",
+      "Workspace area"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-014",
+      "name": "Siam Ahmed",
+      "email": "siam.ahmed@example.com",
+      "phone": "+8801711000014",
+      "photo": "/images/owners/siam.jpg"
+    }
+  },
+  {
+    "title": "Amberkhana Green Residence",
+    "description": "A peaceful apartment in Amberkhana surrounded by greenery with easy access to central Sylhet.",
+    "location": {
+      "area": "Amberkhana",
+      "city": "Sylhet",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 32000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1400,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Balcony",
+      "Parking",
+      "Security",
+      "Elevator",
+      "Generator Backup",
+      "Water Supply",
+      "Air Conditioning"
+    ],
+    "images": [
+      "https://i.ibb.co.com/Y4PTKKKh/Loft-apartment-interior-photography-20260924133043.jpg"
+    ],
+    "extraFeatures": [
+      "Green surroundings",
+      "Family friendly",
+      "Large balcony",
+      "Quiet neighborhood",
+      "Natural ventilation"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-015",
+      "name": "Tanvir Hossain",
+      "email": "tanvir.hossain@example.com",
+      "phone": "+8801711000015",
+      "photo": "/images/owners/tanvir.jpg"
+    }
+  },
+  {
+    "title": "Shahjalal Upashahar Executive Home",
+    "description": "A premium apartment in Shahjalal Upashahar designed for families wanting modern facilities and generous living space.",
+    "location": {
+      "area": "Shahjalal Upashahar",
+      "city": "Sylhet",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 45000,
+    "rentType": "Monthly",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "propertySize": 1900,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Parking",
+      "Elevator",
+      "Security",
+      "Generator Backup",
+      "Air Conditioning",
+      "Balcony",
+      "WiFi"
+    ],
+    "images": [
+      "https://i.ibb.co.com/WW6227Ht/Apartment-verandah-overlooking-l-20260924134113.jpg"
+    ],
+    "extraFeatures": [
+      "Four bedrooms",
+      "Spacious living room",
+      "Premium kitchen",
+      "Master suite",
+      "Dedicated parking"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-016",
+      "name": "Mushfiq Rahman",
+      "email": "mushfiq.rahman@example.com",
+      "phone": "+8801711000016",
+      "photo": "/images/owners/mushfiq.jpg"
+    }
+  },
+  {
+    "title": "Cox's Bazar Kolatoli Beach Villa",
+    "description": "A comfortable beachfront-inspired holiday villa near Kolatoli Beach for families and groups visiting Cox's Bazar.",
+    "location": {
+      "area": "Kolatoli",
+      "city": "Cox's Bazar",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Villa",
+    "rent": 12000,
+    "rentType": "Daily",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "propertySize": 2200,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "WiFi",
+      "Air Conditioning",
+      "Kitchen",
+      "Parking",
+      "Balcony",
+      "TV",
+      "Security"
+    ],
+    "images": [
+      "https://i.ibb.co.com/gLVYYks3/Designing-executive-apartment-in-20260924134117.jpg"
+    ],
+    "extraFeatures": [
+      "Near beach",
+      "Private outdoor seating",
+      "Family holiday villa",
+      "Spacious bedrooms",
+      "Tourist-friendly location"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-017",
+      "name": "Saifur Rahman",
+      "email": "saifur.rahman@example.com",
+      "phone": "+8801711000017",
+      "photo": "/images/owners/saifur.jpg"
+    }
+  },
+  {
+    "title": "Sugandha Beach Family Suite",
+    "description": "A comfortable short-stay family property close to Sugandha Beach with practical facilities and spacious rooms.",
+    "location": {
+      "area": "Sugandha Point",
+      "city": "Cox's Bazar",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Holiday Apartment",
+    "rent": 8500,
+    "rentType": "Daily",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1200,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "WiFi",
+      "Air Conditioning",
+      "TV",
+      "Kitchen",
+      "Balcony",
+      "Security"
+    ],
+    "images": [
+      "https://i.ibb.co.com/C5zXs0pF/Tropical-villa-near-beach-20260924134122.jpg"
+    ],
+    "extraFeatures": [
+      "Walking distance to beach",
+      "Family friendly",
+      "Fully furnished",
+      "Tourist area"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-018",
+      "name": "Imran Chowdhury",
+      "email": "imran.chowdhury@example.com",
+      "phone": "+8801711000018",
+      "photo": "/images/owners/imran.jpg"
+    }
+  },
+  {
+    "title": "Rajshahi Boalia Heritage Home",
+    "description": "A calm and spacious home in Boalia combining traditional Bangladeshi residential character with modern comforts.",
+    "location": {
+      "area": "Boalia",
+      "city": "Rajshahi",
+      "country": "Bangladesh"
+    },
+    "propertyType": "House",
+    "rent": 30000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1800,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Parking",
+      "Garden",
+      "Security",
+      "Air Conditioning",
+      "Balcony",
+      "Kitchen",
+      "Water Supply"
+    ],
+    "images": [
+      "https://i.ibb.co.com/FbqDw8BF/Vacation-bedroom-with-ocean-view-20260924134128.jpg"
+    ],
+    "extraFeatures": [
+      "Private garden",
+      "Traditional exterior",
+      "Large courtyard",
+      "Family-friendly",
+      "Quiet street"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-019",
+      "name": "Rakibul Hasan",
+      "email": "rakibul.hasan@example.com",
+      "phone": "+8801711000019",
+      "photo": "/images/owners/rakibul.jpg"
+    }
+  },
+  {
+    "title": "Rajshahi Laxmipur City Apartment",
+    "description": "A well-connected city apartment in Laxmipur with spacious rooms and a clean contemporary interior.",
+    "location": {
+      "area": "Laxmipur",
+      "city": "Rajshahi",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 24000,
+    "rentType": "Monthly",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1100,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Elevator",
+      "Security",
+      "Parking",
+      "Balcony",
+      "Generator Backup",
+      "Air Conditioning"
+    ],
+    "images": [
+      "https://i.ibb.co.com/5Wr876M9/Heritage-family-house-front-cour-20260924134133.jpg"
+    ],
+    "extraFeatures": [
+      "Central location",
+      "Modern interiors",
+      "Good ventilation",
+      "Near shopping areas"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-020",
+      "name": "Shuvo Islam",
+      "email": "shuvo.islam@example.com",
+      "phone": "+8801711000020",
+      "photo": "/images/owners/shuvo.jpg"
+    }
+  },
+  {
+    "title": "Khulna Sonadanga Family Flat",
+    "description": "A practical three-bedroom family apartment in Sonadanga with comfortable living space and essential modern amenities.",
+    "location": {
+      "area": "Sonadanga",
+      "city": "Khulna",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 26000,
+    "rentType": "Monthly",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "propertySize": 1350,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Parking",
+      "Elevator",
+      "Security",
+      "Balcony",
+      "Generator Backup",
+      "Water Supply"
+    ],
+    "images": [
+      "https://i.ibb.co.com/rRbp70yJ/Apartment-balcony-with-table-chairs-20260924134138.jpg"
+    ],
+    "extraFeatures": [
+      "Family apartment",
+      "Large living room",
+      "Quiet neighborhood",
+      "Nearby markets",
+      "Good daylight"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-021",
+      "name": "Aminul Haque",
+      "email": "aminul.haque@example.com",
+      "phone": "+8801711000021",
+      "photo": "/images/owners/aminul.jpg"
+    }
+  },
+  {
+    "title": "Cumilla Kandirpar Central Apartment",
+    "description": "A modern apartment in the heart of Kandirpar, convenient for professionals and families seeking a central Cumilla address.",
+    "location": {
+      "area": "Kandirpar",
+      "city": "Cumilla",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Apartment",
+    "rent": 22000,
+    "rentType": "Monthly",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "propertySize": 1050,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Elevator",
+      "Parking",
+      "Security",
+      "Balcony",
+      "Air Conditioning",
+      "Water Supply"
+    ],
+    "images": [
+      "/images/properties/kandirpar-central-apartment.jpg"
+    ],
+    "extraFeatures": [
+      "Central Cumilla location",
+      "Near markets",
+      "Modern kitchen",
+      "Bright bedrooms"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-022",
+      "name": "Fardin Ahmed",
+      "email": "fardin.ahmed@example.com",
+      "phone": "+8801711000022",
+      "photo": "/images/owners/fardin.jpg"
+    }
+  },
+  {
+    "title": "Bashundhara Garden Duplex",
+    "description": "A sophisticated duplex property with multiple living areas, private outdoor space and premium residential finishes.",
+    "location": {
+      "area": "Bashundhara Residential Area",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Duplex",
+    "rent": 110000,
+    "rentType": "Monthly",
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "propertySize": 2800,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "Private Garden",
+      "Parking",
+      "Elevator",
+      "Security",
+      "Generator Backup",
+      "Air Conditioning",
+      "Balcony",
+      "WiFi"
+    ],
+    "images": [
+      "/images/properties/bashundhara-garden-duplex.jpg"
+    ],
+    "extraFeatures": [
+      "Duplex layout",
+      "Private garden",
+      "Four bedrooms",
+      "Premium marble flooring",
+      "Family lounge",
+      "Double-height living area"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-023",
+      "name": "Farhan Kabir",
+      "email": "farhan.kabir@example.com",
+      "phone": "+8801711000023",
+      "photo": "/images/owners/farhan.jpg"
+    }
+  },
+  {
+    "title": "Gulshan Serviced Executive Suite",
+    "description": "A fully furnished executive residence for professionals who need flexible accommodation in central Gulshan.",
+    "location": {
+      "area": "Gulshan-1",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    "propertyType": "Serviced Apartment",
+    "rent": 18000,
+    "rentType": "Daily",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "propertySize": 750,
+    "sizeUnit": "sqft",
+    "amenities": [
+      "WiFi",
+      "Air Conditioning",
+      "TV",
+      "Kitchen",
+      "Housekeeping",
+      "Elevator",
+      "Security",
+      "Parking"
+    ],
+    "images": [
+      "/images/properties/gulshan-serviced-suite.jpg"
+    ],
+    "extraFeatures": [
+      "Fully furnished",
+      "Daily housekeeping",
+      "Work desk",
+      "Executive accommodation",
+      "Central location"
+    ],
+    "status": "Approved",
+    "ownerInformation": {
+      "ownerId": "owner-024",
+      "name": "Ayesha Siddiqua",
+      "email": "ayesha.siddiqua@example.com",
+      "phone": "+8801711000024",
+      "photo": "/images/owners/ayesha.jpg"
+    }
+  }
+]
