@@ -17,15 +17,15 @@ const DashboardSideBar = async () => {
     const tenantLinks = [
         {
             name: "Dashboard",
-            href: "/dashboard/tenant",
+            href: "/dashboard/Tenant",
         },
         {
             name: "My Bookings",
-            href: "/dashboard/tenant/bookings",
+            href: "/dashboard/Tenant/bookings",
         },
         {
             name: "Favorites",
-            href: "/dashboard/tenant/favorites",
+            href: "/dashboard/Tenant/favorites",
         },
         {
             name: "Profile",
@@ -36,19 +36,19 @@ const DashboardSideBar = async () => {
     const ownerLinks = [
         {
             name: "Dashboard",
-            href: "/dashboard/owner",
+            href: "/dashboard/Owner",
         },
         {
             name: "Add Property",
-            href: "/dashboard/owner/add-property",
+            href: "/dashboard/Owner/add-property",
         },
         {
             name: "My Properties",
-            href: "/dashboard/owner/properties",
+            href: "/dashboard/Owner/properties",
         },
         {
             name: "Booking Requests",
-            href: "/dashboard/owner/booking-requests",
+            href: "/dashboard/Owner/booking-requests",
         },
         {
             name: "Profile",
@@ -59,23 +59,23 @@ const DashboardSideBar = async () => {
     const adminLinks = [
         {
             name: "Dashboard",
-            href: "/dashboard/admin",
+            href: "/dashboard/Admin",
         },
         {
             name: "All Users",
-            href: "/dashboard/admin/users",
+            href: "/dashboard/Admin/users",
         },
         {
             name: "All Properties",
-            href: "/dashboard/admin/properties",
+            href: "/dashboard/Admin/properties",
         },
         {
             name: "All Bookings",
-            href: "/dashboard/admin/bookings",
+            href: "/dashboard/Admin/bookings",
         },
         {
             name: "Transactions",
-            href: "/dashboard/admin/transactions",
+            href: "/dashboard/Admin/transactions",
         },
         {
             name: "Profile",

@@ -23,7 +23,12 @@ export default function RootLayout({ children }) {
       className={`${lora.variable} h-full antialiased`}
     >
       <body className="font-main min-h-full flex flex-col w-full max-w-[1440px] mx-auto">
-        <Navbar />
+        <div 
+        // className="sticky top-0 z-50"
+        >
+          <Navbar />
+        </div>
+        
         {children}
         <Footer />
         </body>

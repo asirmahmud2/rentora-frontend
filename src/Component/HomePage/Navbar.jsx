@@ -72,7 +72,7 @@ const Navbar = () => {
         <>
             <nav
                 suppressHydrationWarning
-                className="sticky top-0 z-50 w-full border-b border-black/10 bg-[#FDFCF9]/95 backdrop-blur-md"
+                className="w-full border-b border-black/10 bg-[#FDFCF9]/95 backdrop-blur-md"
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
