@@ -1,5 +1,7 @@
 import { Lora } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/Component/HomePage/Navbar";
+import Footer from "@/Component/HomePage/Footer";
 
 const lora = Lora({
   variable: "--font-main",
@@ -20,7 +22,11 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${lora.variable} h-full antialiased`}
     >
-      <body className="font-main min-h-full flex flex-col">{children}</body>
+      <body className="font-main min-h-full flex flex-col w-full max-w-[1440px] mx-auto">
+        <Navbar />
+        {children}
+        <Footer />
+        </body>
     </html>
   );
 }

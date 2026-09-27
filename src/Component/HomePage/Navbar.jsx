@@ -240,7 +240,7 @@ const Navbar = () => {
                                 {isLoggedIn && (
                                     <li>
                                         <Link
-                                            href="/dashboard"
+                                            href={`/dashboard/${role}`}
                                             className={`group relative flex items-center gap-1 py-4 font-sans text-[10px] uppercase tracking-[0.24em] transition ${
                                                 pathname.startsWith("/dashboard")
                                                     ? "text-[#8A6E68]"
