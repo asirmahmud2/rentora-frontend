@@ -24,7 +24,7 @@ export const ServerQuery = async (path, method = "GET") => {
     const response = await fetch(`${baseUrl}${path}`, {
         method: method,
     });
-
+    
     const result = await response.json();
 
     return result;

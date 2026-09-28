@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import CommentSection from "@/Component/Property/Review";
 import BookingModal from "@/Component/Property/BookingModal";
+import { AddFavorite, checkFavorite, RemoveFavorite } from "@/app/Server/Actions/Favorite";
 
 
 const PropertyDetailsDesign = ({ property, user }) => {
@@ -32,6 +33,21 @@ const PropertyDetailsDesign = ({ property, user }) => {
     const [activeImage, setActiveImage] = useState(0);
 
     const [isFavorite, setIsFavorite] = useState(false);
+
+    useEffect(() => {
+        const favStatus = async () => {
+            if (!user?.id || !property?._id) return;
+
+            const data = await checkFavorite(
+                property._id,
+                user.id
+            );
+
+            setIsFavorite(data);
+        };
+
+        favStatus();
+    }, [property._id, user?.id]);
 
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const swiperRef = useRef(null);
@@ -56,25 +72,38 @@ const PropertyDetailsDesign = ({ property, user }) => {
         }
 
         try {
-            setIsFavorite((previousValue) => !previousValue);
+            if (!isFavorite) {
+                const newFavorite = {
+                    ...property,
+                    propertyId: property._id,
+                    userId: user.id,
+                };
 
-            /*
-             * Example future API:
-             *
-             * await fetch("/api/favorites", {
-             *     method: isFavorite ? "DELETE" : "POST",
-             *     headers: {
-             *         "Content-Type": "application/json",
-             *     },
-             *     body: JSON.stringify({
-             *         propertyId: property._id.toString(),
-             *     }),
-             * });
-             */
+                const response = await AddFavorite(newFavorite);
+
+                if (!response.ok) {
+                    throw new Error("Failed to add favorite");
+                }
+
+                setIsFavorite(true);
+
+                console.log("Added favorite:", response.data);
+            } else {
+                const response = await RemoveFavorite(
+                    property._id,
+                    user.id
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to remove favorite");
+                }
+
+                setIsFavorite(false);
+
+                console.log("Removed favorite:", response.data);
+            }
         } catch (error) {
             console.error("Favorite error:", error);
-
-            setIsFavorite((previousValue) => !previousValue);
         }
     };
 
@@ -257,11 +286,10 @@ const PropertyDetailsDesign = ({ property, user }) => {
                                         key={`${image}-${index}`}
                                         type="button"
                                         onClick={() => swiperRef.current?.slideTo(index)}
-                                        className={`relative h-20 w-28 shrink-0 overflow-hidden bg-[#EEE9E4] sm:h-24 sm:w-36 ${
-                                            activeImage === index
+                                        className={`relative h-20 w-28 shrink-0 overflow-hidden bg-[#EEE9E4] sm:h-24 sm:w-36 ${activeImage === index
                                                 ? "ring-1 ring-[#8A6E68] ring-offset-2"
                                                 : ""
-                                        }`}
+                                            }`}
                                         aria-label={`View image ${index + 1}`}
                                     >
                                         <Image
@@ -308,14 +336,14 @@ const PropertyDetailsDesign = ({ property, user }) => {
                                             : "Add to favorites"
                                     }
                                     className={`flex h-10 w-10 items-center justify-center border transition duration-300 ${isFavorite
-                                            ? "border-[#8A6E68] bg-[#8A6E68] text-white"
-                                            : "border-[#1A1A1A]/15 text-[#5E5854] hover:border-[#8A6E68] hover:text-[#8A6E68]"
+                                        ? "border-[#8A6E68] bg-[#8A6E68] text-white"
+                                        : "border-[#1A1A1A]/15 text-[#5E5854] hover:border-[#8A6E68] hover:text-[#8A6E68]"
                                         }`}
                                 >
                                     <FiHeart
                                         className={`text-sm ${isFavorite
-                                                ? "fill-current"
-                                                : ""
+                                            ? "fill-current"
+                                            : ""
                                             }`}
                                     />
                                 </button>
