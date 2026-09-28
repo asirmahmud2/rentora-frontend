@@ -1,21 +1,8 @@
 'use server'
 
-const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+import { ServerMutation } from "../core/server"
+
 
 export const createProperty = async (data) => {
-    const response = await fetch(`${baseUrl}/api/properties`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-
-    return {
-        ok: response.ok,
-        status: response.status,
-        data: result,
-    };
-};
+    return ServerMutation("/api/properties", data);
+}
