@@ -11,6 +11,7 @@ import {
     FiPlus,
     FiTrash2,
 } from "react-icons/fi";
+import OwnerFeedbackButton from "./OwnerFeedbackButton";
 
 const MyProperties = async () => {
     const user = await getUser();
@@ -49,18 +50,13 @@ const MyProperties = async () => {
 
     return (
         <main className="min-w-0">
-
             <div className="container mx-auto px-4 sm:px-6 lg:px-0">
-
                 {/* =====================================================
                     HEADER
                 ===================================================== */}
                 <section className="border-b border-[#1A1A1A]/10 pb-7 sm:pb-8">
-
                     <div className="flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
-
                         <div>
-
                             <div className="mb-4 flex items-center gap-4">
                                 <span className="h-px w-8 bg-[#8A6E68]" />
 
@@ -73,7 +69,6 @@ const MyProperties = async () => {
                                 <h1 className="font-serif text-4xl leading-none tracking-[-0.02em] text-[#1A1A1A] sm:text-5xl lg:text-[54px]">
                                     My properties.
                                 </h1>
-
                             </div>
 
                             <p className="mt-4 max-w-xl font-serif text-base leading-7 text-[#77716D] sm:text-lg">
@@ -102,9 +97,7 @@ const MyProperties = async () => {
                 ===================================================== */}
                 {properties.length === 0 ? (
                     <section className="py-16 sm:py-20 lg:py-24">
-
                         <div className="relative overflow-hidden bg-[#EEE9E4] px-6 py-14 text-center sm:px-10 sm:py-20">
-
                             <span
                                 aria-hidden="true"
                                 className="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 select-none font-serif text-[260px] leading-none text-[#E4DCD6]"
@@ -113,7 +106,6 @@ const MyProperties = async () => {
                             </span>
 
                             <div className="relative z-10 mx-auto max-w-xl">
-
                                 <p className="font-sans text-[8px] uppercase tracking-[0.3em] text-[#8A6E68]">
                                     Your portfolio is empty
                                 </p>
@@ -134,7 +126,6 @@ const MyProperties = async () => {
                                     Add Your First Property
                                     <FiArrowUpRight className="text-sm" />
                                 </Link>
-
                             </div>
                         </div>
                     </section>
@@ -144,12 +135,9 @@ const MyProperties = async () => {
                             DESKTOP TABLE
                         ================================================= */}
                         <section className="hidden py-8 sm:py-10 lg:block">
-
                             <div className="border-t border-[#1A1A1A]/10">
-
                                 {/* Table Header */}
                                 <div className="grid grid-cols-[2.2fr_1.3fr_0.9fr_0.8fr_0.9fr_0.7fr] border-b border-[#1A1A1A]/10 px-4 py-4 xl:px-5">
-
                                     <span className="font-sans text-[8px] uppercase tracking-[0.22em] text-[#9C958F]">
                                         Property
                                     </span>
@@ -173,7 +161,6 @@ const MyProperties = async () => {
                                     <span className="text-right font-sans text-[8px] uppercase tracking-[0.22em] text-[#9C958F]">
                                         Actions
                                     </span>
-
                                 </div>
 
                                 {/* Table Rows */}
@@ -186,10 +173,8 @@ const MyProperties = async () => {
                                             key={propertyId || index}
                                             className="group grid grid-cols-[2.2fr_1.3fr_0.9fr_0.8fr_0.9fr_0.7fr] items-center border-b border-[#1A1A1A]/10 px-4 py-5 transition-colors duration-300 hover:bg-[#EEE9E4]/60 xl:px-5"
                                         >
-
                                             {/* Property */}
                                             <div className="flex min-w-0 items-center gap-4">
-
                                                 <div className="h-[68px] w-[82px] shrink-0 overflow-hidden bg-[#EEE9E4]">
                                                     {property.images?.[0] ? (
                                                         <img
@@ -227,7 +212,6 @@ const MyProperties = async () => {
 
                                             {/* Location */}
                                             <div className="pr-5">
-
                                                 <div className="flex items-start gap-2">
                                                     <FiMapPin className="mt-0.5 shrink-0 text-xs text-[#8A6E68]" />
 
@@ -255,7 +239,6 @@ const MyProperties = async () => {
                                                         </p>
                                                     </div>
                                                 </div>
-
                                             </div>
 
                                             {/* Rent */}
@@ -295,7 +278,6 @@ const MyProperties = async () => {
 
                                             {/* Status */}
                                             <div>
-
                                                 <span
                                                     className={`inline-flex items-center gap-2 border px-2.5 py-1.5 font-sans text-[8px] uppercase tracking-[0.13em] ${getStatusClass(
                                                         property.status
@@ -308,22 +290,14 @@ const MyProperties = async () => {
                                                     )}
                                                 </span>
 
-                                                {property.status ===
-                                                    "Rejected" && (
-                                                    <Link
-                                                        href={`/dashboard/owner/properties/${propertyId}`}
-                                                        className="mt-2 flex items-center gap-1 font-sans text-[8px] uppercase tracking-[0.1em] text-[#8A6E68] transition hover:text-[#1A1A1A]"
-                                                    >
-                                                        <FiEye className="text-xs" />
-                                                        View feedback
-                                                    </Link>
-                                                )}
-
+                                                <OwnerFeedbackButton
+                                                    property={property}
+                                                    className="mt-2 flex items-center gap-1 font-sans text-[8px] uppercase tracking-[0.1em] text-[#8A6E68] transition hover:text-[#1A1A1A]"
+                                                />
                                             </div>
 
                                             {/* Actions */}
                                             <div className="flex items-center justify-end gap-1">
-
                                                 <Link
                                                     href={`/dashboard/owner/properties/${propertyId}/edit`}
                                                     aria-label={`Edit ${property.title}`}
@@ -339,9 +313,7 @@ const MyProperties = async () => {
                                                 >
                                                     <FiTrash2 className="text-sm" />
                                                 </button>
-
                                             </div>
-
                                         </div>
                                     );
                                 })}
@@ -352,7 +324,6 @@ const MyProperties = async () => {
                             MOBILE PROPERTY LIST
                         ================================================= */}
                         <section className="py-7 sm:py-9 lg:hidden">
-
                             <div className="mb-5 flex items-center gap-4">
                                 <span className="h-px w-7 bg-[#8A6E68]" />
 
@@ -362,7 +333,6 @@ const MyProperties = async () => {
                             </div>
 
                             <div className="space-y-4">
-
                                 {properties.map((property, index) => {
                                     const propertyId =
                                         property._id?.toString();
@@ -372,7 +342,6 @@ const MyProperties = async () => {
                                             key={propertyId || index}
                                             className="bg-[#EEE9E4]"
                                         >
-
                                             {/* Image */}
                                             <Link
                                                 href={`/properties/${propertyId}`}
@@ -407,9 +376,7 @@ const MyProperties = async () => {
 
                                             {/* Content */}
                                             <div className="p-5">
-
                                                 <div className="flex items-start justify-between gap-5">
-
                                                     <div className="min-w-0">
                                                         <p className="font-sans text-[8px] uppercase tracking-[0.18em] text-[#8A6E68]">
                                                             {String(
@@ -446,7 +413,6 @@ const MyProperties = async () => {
                                                                 "Month"}
                                                         </span>
                                                     </p>
-
                                                 </div>
 
                                                 {/* Location */}
@@ -496,15 +462,12 @@ const MyProperties = async () => {
                                                             property.propertySize ||
                                                                 0
                                                         ).toLocaleString()}{" "}
-                                                        {
-                                                            property.sizeUnit
-                                                        }
+                                                        {property.sizeUnit}
                                                     </span>
                                                 </div>
 
                                                 {/* Actions */}
                                                 <div className="mt-6 flex items-center justify-between border-t border-[#1A1A1A]/10 pt-4">
-
                                                     <Link
                                                         href={`/dashboard/owner/properties/${propertyId}/edit`}
                                                         className="group inline-flex items-center gap-2 font-sans text-[9px] uppercase tracking-[0.18em] text-[#403B38] transition hover:text-[#8A6E68]"
@@ -520,26 +483,17 @@ const MyProperties = async () => {
                                                         <FiTrash2 className="text-xs" />
                                                         Delete
                                                     </button>
-
                                                 </div>
 
                                                 {/* Rejection Feedback */}
-                                                {property.status ===
-                                                    "Rejected" && (
-                                                    <Link
-                                                        href={`/dashboard/owner/properties/${propertyId}`}
-                                                        className="mt-4 flex items-center justify-center gap-2 border border-[#8A6E68]/20 bg-[#8A6E68]/5 py-3 font-sans text-[8px] uppercase tracking-[0.18em] text-[#8A6E68] transition hover:bg-[#8A6E68]/10"
-                                                    >
-                                                        <FiEye className="text-xs" />
-                                                        View Rejection Feedback
-                                                    </Link>
-                                                )}
-
+                                                <OwnerFeedbackButton
+                                                    property={property}
+                                                    className="mt-4 flex w-full items-center justify-center gap-2 border border-[#8A6E68]/20 bg-[#8A6E68]/5 py-3 font-sans text-[8px] uppercase tracking-[0.18em] text-[#8A6E68] transition hover:bg-[#8A6E68]/10"
+                                                />
                                             </div>
                                         </article>
                                     );
                                 })}
-
                             </div>
                         </section>
                     </>
@@ -565,7 +519,6 @@ const MyProperties = async () => {
                         </div>
                     </div>
                 )}
-
             </div>
         </main>
     );

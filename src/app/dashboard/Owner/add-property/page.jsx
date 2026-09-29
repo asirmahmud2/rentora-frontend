@@ -270,9 +270,13 @@ const AddProperties = () => {
                 amenities: toList(formData.amenities),
                 images: formData.images.map((img) => img.trim()).filter(Boolean),
                 extraFeatures: toList(formData.extraFeatures),
-                ownerId: user?.id,
-                ownerName: user?.name,
-                ownerEmail: user?.email,
+                ownerInformation: {
+                    ownerId: user?.id,
+                    name: user?.name,
+                    email: user?.email,
+                    phone: user?.phone,
+                    photo: user?.image,
+                },
                 status: "Pending",
             };
 
@@ -610,7 +614,7 @@ Modern kitchen`}
                                 ))}
                             </div>
 
-                                {/* //Add Another Image Button clickable cursor */}
+                            {/* //Add Another Image Button clickable cursor */}
                             <button
                                 type="button"
                                 onClick={addImageField}

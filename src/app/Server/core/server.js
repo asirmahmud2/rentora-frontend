@@ -23,6 +23,10 @@ export const ServerMutation = async (path, data, method = "POST") => {
 export const ServerQuery = async (path, method = "GET") => {
     const response = await fetch(`${baseUrl}${path}`, {
         method: method,
+        cache: "no-store",
+        headers: {
+            "Content-Type": "application/json",
+        },
     });
     
     const result = await response.json();
