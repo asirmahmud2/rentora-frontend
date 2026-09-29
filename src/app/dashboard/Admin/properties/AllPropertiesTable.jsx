@@ -288,7 +288,7 @@ const AllPropertiesTable = ({ properties }) => {
 
                                                     {/* Update */}
                                                     <Link
-                                                        href={`/dashboard/admin/properties/${property._id}/edit`}
+                                                        href={`/dashboard/Admin/properties/${property._id}/edit`}
                                                         title="Update"
                                                         className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#6D6863] transition-all duration-300 hover:border-[#8A6E68] hover:bg-[#F8F5F1]"
                                                     >

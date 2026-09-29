@@ -25,3 +25,9 @@ export const ApproveProperty = async (data, id) => {
     revalidatePath("/dashboard/Admin/properties");
     return result;
 }
+
+export const UpdateProperty = async (data, id) => {
+    const result = await ServerMutation(`/api/properties/${id}`, data,"PATCH");
+    revalidatePath(`/dashboard/Admin/properties`, 'layout');
+    return result;
+}
