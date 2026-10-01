@@ -1,8 +1,10 @@
 import DashboardSideBar from "@/Component/Dashboard/DashBoardSideBar";
+import { CheckLogin } from "@/lib/getUser";
 import React from "react";
 
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = async({ children }) => {
+    await CheckLogin();
     return (
         <main className="min-h-screen bg-[#F4F2ED] text-[#1A1A1A]">
             <div className="container mx-auto px-4 py-5 sm:px-6 sm:py-7 lg:px-8 lg:py-8">

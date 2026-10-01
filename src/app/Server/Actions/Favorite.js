@@ -2,8 +2,8 @@
 
 import { ServerMutation, ServerQuery } from "../core/server";
 
-export const AddFavorite = async (data) => {
-    return ServerMutation("/api/favorite", data);
+export const AddFavorite = async (data, userId) => {
+    return ServerMutation(`/api/favorite?userId=${userId}`, data);
 };
 
 export const RemoveFavorite = async (propertyId, userId) => {

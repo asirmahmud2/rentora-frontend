@@ -1,10 +1,11 @@
 import React from "react";
-import { getUser } from "@/lib/getUser";
+import { CheckLogin, getUser } from "@/lib/getUser";
 
 import { getProperty } from "@/app/Server/api/mutation";
 import PropertyDetailsDesign from "./PropertyDetailsDesign";
 
 const PropertyDetailsPage = async ({ params }) => {
+    await CheckLogin();
     const { id } = await params;
 
     const result = await getProperty(id);

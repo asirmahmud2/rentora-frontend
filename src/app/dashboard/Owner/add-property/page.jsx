@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -281,7 +281,7 @@ const AddProperties = () => {
             };
 
             /* Change this endpoint if your backend uses a different route. */
-            const response = await createProperty(propertyData);
+            const response = await createProperty(propertyData,user?.id);
 
             if (!response.ok) {
                 throw new Error(response.data.message || "Unable to create the property.");

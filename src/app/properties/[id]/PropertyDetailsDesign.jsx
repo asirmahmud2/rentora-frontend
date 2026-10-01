@@ -79,7 +79,7 @@ const PropertyDetailsDesign = ({ property, user }) => {
                     userId: user.id,
                 };
 
-                const response = await AddFavorite(newFavorite);
+                const response = await AddFavorite(newFavorite, user.id);
 
                 if (!response.ok) {
                     throw new Error("Failed to add favorite");

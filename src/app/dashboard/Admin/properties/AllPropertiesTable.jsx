@@ -140,11 +140,16 @@ const AllPropertiesTable = ({ properties }) => {
                                         >
                                             {/* Property */}
                                             <td className="px-6 py-5">
-                                                <div className="flex items-center gap-4">
+                                                <Link
+                                                    href={`/property/${property._id}`}
+                                                    className="group flex items-center gap-4"
+                                                >
                                                     <div className="relative h-14 w-20 shrink-0 overflow-hidden bg-[#EEE9E4]">
                                                         {property.images?.[0] ? (
                                                             <Image
-                                                                src={property.images[0]}
+                                                                src={
+                                                                    property.images[0]
+                                                                }
                                                                 alt={
                                                                     property.title ||
                                                                     "Property"
@@ -162,10 +167,9 @@ const AllPropertiesTable = ({ properties }) => {
 
                                                     <div className="min-w-0">
                                                         <p className="mb-1 font-sans text-[8px] tracking-[0.16em] text-[#8A6E68]">
-                                                            {String(index + 1).padStart(
-                                                                2,
-                                                                "0"
-                                                            )}
+                                                            {String(
+                                                                index + 1
+                                                            ).padStart(2, "0")}
                                                         </p>
 
                                                         <p className="max-w-[250px] truncate font-serif text-lg text-[#1A1A1A]">
@@ -183,19 +187,21 @@ const AllPropertiesTable = ({ properties }) => {
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </Link>
                                             </td>
 
                                             {/* Owner */}
                                             <td className="px-6 py-5">
                                                 <div>
                                                     <p className="font-serif text-base text-[#1A1A1A]">
-                                                        {property.ownerInformation
+                                                        {property
+                                                            .ownerInformation
                                                             ?.name || "—"}
                                                     </p>
 
                                                     <p className="mt-1 max-w-[190px] truncate font-sans text-[9px] text-[#8A847F]">
-                                                        {property.ownerInformation
+                                                        {property
+                                                            .ownerInformation
                                                             ?.email || "—"}
                                                     </p>
                                                 </div>
@@ -218,8 +224,7 @@ const AllPropertiesTable = ({ properties }) => {
                                                 </p>
 
                                                 <p className="mt-1 font-sans text-[8px] uppercase tracking-[0.14em] text-[#A09A95]">
-                                                    {property.rentType ||
-                                                        "—"}
+                                                    {property.rentType || "—"}
                                                 </p>
                                             </td>
 
@@ -243,7 +248,6 @@ const AllPropertiesTable = ({ properties }) => {
                                                             className="mt-2 flex items-center gap-2 font-sans text-[8px] uppercase tracking-[0.12em] text-[#8A6E68] hover:underline"
                                                         >
                                                             <FiEye />
-
                                                             Feedback
                                                         </button>
                                                     )}
@@ -255,40 +259,40 @@ const AllPropertiesTable = ({ properties }) => {
                                                     {/* Approve */}
                                                     {property.status !==
                                                         "Approved" && (
-                                                            <button
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    handleApprove(
-                                                                        property
-                                                                    )
-                                                                }
-                                                                title="Approve"
-                                                                className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#627262] transition-all duration-300 hover:border-[#627262] hover:bg-[#F2F6F2]"
-                                                            >
-                                                                <FiCheck className="text-sm" />
-                                                            </button>
-                                                        )}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                handleApprove(
+                                                                    property
+                                                                )
+                                                            }
+                                                            title="Approve"
+                                                            className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#627262] transition-all duration-300 hover:border-[#627262] hover:bg-[#F2F6F2]"
+                                                        >
+                                                            <FiCheck className="text-sm" />
+                                                        </button>
+                                                    )}
 
                                                     {/* Reject */}
                                                     {property.status !==
                                                         "Rejected" && (
-                                                            <button
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    openRejectModal(
-                                                                        property
-                                                                    )
-                                                                }
-                                                                title="Reject"
-                                                                className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#9A6963] transition-all duration-300 hover:border-[#9A6963] hover:bg-[#FBF4F2]"
-                                                            >
-                                                                <FiX className="text-sm" />
-                                                            </button>
-                                                        )}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                openRejectModal(
+                                                                    property
+                                                                )
+                                                            }
+                                                            title="Reject"
+                                                            className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#9A6963] transition-all duration-300 hover:border-[#9A6963] hover:bg-[#FBF4F2]"
+                                                        >
+                                                            <FiX className="text-sm" />
+                                                        </button>
+                                                    )}
 
                                                     {/* Update */}
                                                     <Link
-                                                        href={`/dashboard/Admin/properties/${property._id}/edit`}
+                                                        href={`/dashboard/edit/${property._id}`}
                                                         title="Update"
                                                         className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#6D6863] transition-all duration-300 hover:border-[#8A6E68] hover:bg-[#F8F5F1]"
                                                     >
@@ -327,7 +331,10 @@ const AllPropertiesTable = ({ properties }) => {
                                 className="border border-[#1A1A1A]/10 bg-white p-5"
                             >
                                 {/* Image + Heading */}
-                                <div className="flex gap-4">
+                                <Link
+                                    href={`/property/${property._id}`}
+                                    className="group flex gap-4"
+                                >
                                     <div className="relative h-20 w-24 shrink-0 overflow-hidden bg-[#EEE9E4]">
                                         {property.images?.[0] ? (
                                             <Image
@@ -350,10 +357,9 @@ const AllPropertiesTable = ({ properties }) => {
                                     <div className="min-w-0 flex-1">
                                         <div className="flex items-start justify-between gap-3">
                                             <span className="font-sans text-[9px] tracking-[0.15em] text-[#8A6E68]">
-                                                {String(index + 1).padStart(
-                                                    2,
-                                                    "0"
-                                                )}
+                                                {String(
+                                                    index + 1
+                                                ).padStart(2, "0")}
                                             </span>
 
                                             <StatusBadge
@@ -366,7 +372,7 @@ const AllPropertiesTable = ({ properties }) => {
                                                 "Untitled Property"}
                                         </h3>
                                     </div>
-                                </div>
+                                </Link>
 
                                 {/* Information */}
                                 <div className="mt-5 grid grid-cols-2 gap-4 border-t border-[#1A1A1A]/8 pt-5">
@@ -546,14 +552,15 @@ const StatusBadge = ({ status }) => {
 
     return (
         <span
-            className={`inline-flex items-center gap-2 px-3 py-2 font-sans text-[8px] uppercase tracking-[0.16em] ${statusClasses[normalizedStatus] ||
+            className={`inline-flex items-center gap-2 px-3 py-2 font-sans text-[8px] uppercase tracking-[0.16em] ${
+                statusClasses[normalizedStatus] ||
                 statusClasses.Pending
-                }`}
+            }`}
         >
             <span
-                className={`h-1.5 w-1.5 rounded-full ${dotClasses[normalizedStatus] ||
-                    dotClasses.Pending
-                    }`}
+                className={`h-1.5 w-1.5 rounded-full ${
+                    dotClasses[normalizedStatus] || dotClasses.Pending
+                }`}
             />
 
             {normalizedStatus}

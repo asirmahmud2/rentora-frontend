@@ -1,6 +1,6 @@
 import React from 'react';
-import EditProperty from './EditProperty';
 import { getProperty } from '@/app/Server/api/mutation';
+import EditProperty from './EditProperty';
 
 const EditPropertyPage = async ({ params }) => {
     const { id } = await params;

@@ -4,12 +4,13 @@ import { revalidatePath } from "next/cache";
 import { ServerMutation, ServerQuery } from "../core/server"
 
 
-export const createProperty = async (data) => {
-    return ServerMutation("/api/properties", data);
+
+export const createProperty = async (data, userId) => {
+    return ServerMutation(`/api/properties?userId=${userId}`, data);
 }
 
-export const DeleteProperty = async (id) => {
-    const result = await ServerQuery(`/api/properties/${id}`, "DELETE");
+export const DeleteProperty = async (id, userId=null) => {
+    const result = await ServerQuery(`/api/properties/${id}?userId=${userId}`, "DELETE");
     revalidatePath("/dashboard/Admin/properties");
     return result;
 }
@@ -29,5 +30,7 @@ export const ApproveProperty = async (data, id) => {
 export const UpdateProperty = async (data, id) => {
     const result = await ServerMutation(`/api/properties/${id}`, data,"PATCH");
     revalidatePath(`/dashboard/Admin/properties`, 'layout');
+    revalidatePath(`/dashboard/Owner/properties`, 'layout');
+    revalidatePath(`/dashboard/Tenant/properties`, 'layout');
     return result;
 }
