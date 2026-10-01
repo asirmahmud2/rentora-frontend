@@ -12,7 +12,7 @@ export const getProperty = async (id) => {
     return ServerQuery(`/api/properties?id=${id}`, "GET");
 };
 
-export const getAllProperties = async (status, filter = {}) => {
+export const getAllProperties = async (status = "Approved", filter = {}) => {
     const searchParams = new URLSearchParams();
     // Status is always required.
     searchParams.set("status", status);
@@ -29,5 +29,6 @@ export const getAllProperties = async (status, filter = {}) => {
         searchParams.set("sort", filter.sort);
     }
 
+    // Add the search parameters to the URL.
     return ServerQuery(`/api/properties?${searchParams.toString()}`, "GET");
 };

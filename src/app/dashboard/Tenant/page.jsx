@@ -12,99 +12,19 @@ import {
     FiHeart,
     FiMapPin,
 } from "react-icons/fi";
+import { GetFavorites } from "@/app/Server/Actions/Favorite";
 
 const TenantPage = async () => {
     const user = await getUser();
+    const AllFavorite = await GetFavorites(user.id);
 
-    /*
-     * Temporary dashboard data.
-     *
-     * Replace these with data from your backend/API later.
-     */
+    // Make sure the page always has an array to work with.
+    const favorites = Array.isArray(AllFavorite)
+        ? AllFavorite
+        : [];
     const totalBookings = 5;
     const activeBookings = 1;
-    const favoriteCount = 8;
-
-    const upcomingBooking = {
-        title: "Elegant Gulshan Lake Residence",
-        location: "Gulshan-2, Dhaka",
-        image:
-            "https://i.ibb.co.com/GvgkZfL9/Modern-apartment-living-room-int-20260924130245.jpg",
-        moveInDate: "15 October 2026",
-        rent: 85000,
-        rentType: "Monthly",
-        status: "Approved",
-    };
-
-    const recentBookings = [
-        {
-            id: "01",
-            property: "Elegant Gulshan Lake Residence",
-            location: "Gulshan-2, Dhaka",
-            date: "15 Oct 2026",
-            amount: 85000,
-            status: "Approved",
-        },
-        {
-            id: "02",
-            property: "Modern Banani Residence",
-            location: "Banani, Dhaka",
-            date: "02 Sep 2026",
-            amount: 72000,
-            status: "Pending",
-        },
-        {
-            id: "03",
-            property: "Lakeview Studio",
-            location: "Dhanmondi, Dhaka",
-            date: "18 Aug 2026",
-            amount: 45000,
-            status: "Completed",
-        },
-    ];
-
-    const favoriteProperties = [
-        {
-            id: "01",
-            title: "Gulshan Garden Residence",
-            location: "Gulshan, Dhaka",
-            price: 75000,
-            image:
-                "https://i.ibb.co.com/GvgkZfL9/Modern-apartment-living-room-int-20260924130245.jpg",
-        },
-        {
-            id: "02",
-            title: "Quiet Banani Apartment",
-            location: "Banani, Dhaka",
-            price: 68000,
-            image:
-                "https://i.ibb.co.com/GvgkZfL9/Modern-apartment-living-room-int-20260924130245.jpg",
-        },
-        {
-            id: "03",
-            title: "Modern Lakeside Home",
-            location: "Dhanmondi, Dhaka",
-            price: 92000,
-            image:
-                "https://i.ibb.co.com/GvgkZfL9/Modern-apartment-living-room-int-20260924130245.jpg",
-        },
-    ];
-
-    const formatRent = (rent) => {
-        return `৳${Number(rent || 0).toLocaleString("en-BD")}`;
-    };
-
-    const getStatusClass = (status) => {
-        if (status === "Approved" || status === "Completed") {
-            return "text-[#65745D]";
-        }
-
-        if (status === "Rejected") {
-            return "text-[#8A6E68]";
-        }
-
-        return "text-[#826B35]";
-    };
+    const favoriteCount = favorites.length;
 
     return (
         <main className="min-w-0 bg-[#F4F2ED]">

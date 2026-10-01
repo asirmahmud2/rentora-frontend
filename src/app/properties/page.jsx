@@ -2,6 +2,7 @@ import React from "react";
 
 import AllPropertyDesign from "./AllProperty";
 import { getAllProperties } from "../Server/api/mutation";
+import { getUser } from "@/lib/getUser";
 
 
 const AllProperties = async ({ searchParams }) => {
@@ -20,6 +21,7 @@ const AllProperties = async ({ searchParams }) => {
      * actual filtering happens on the backend/database.
      */
     const properties = await getAllProperties("Approved", filters);
+    const user = await getUser();
 
     return (
         <main className="min-h-screen bg-[#FDFCF9] text-[#1A1A1A]">
@@ -27,6 +29,7 @@ const AllProperties = async ({ searchParams }) => {
                 <AllPropertyDesign
                     properties={properties || []}
                     filters={filters}
+                    user={user}
                 />
             </div>
         </main>

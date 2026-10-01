@@ -6,18 +6,16 @@ import Link from "next/link";
 
 import {
     FiArrowUpRight,
-    FiEye,
+    FiEdit3,
     FiMapPin,
     FiPlus,
-    FiTrash2,
 } from "react-icons/fi";
 import OwnerFeedbackButton from "./OwnerFeedbackButton";
+import DeletePropertyButton from "./DeletePropertyButton";
 
 const MyProperties = async () => {
     const user = await getUser();
-
     const ownerID = user?.id;
-
     const properties = (await getPropertyById(ownerID)) || [];
 
     const formatRent = (rent) => {
@@ -179,8 +177,7 @@ const MyProperties = async () => {
                                                     {property.images?.[0] ? (
                                                         <img
                                                             src={
-                                                                property
-                                                                    .images[0]
+                                                                property.images[0]
                                                             }
                                                             alt={
                                                                 property.title
@@ -244,9 +241,7 @@ const MyProperties = async () => {
                                             {/* Rent */}
                                             <div>
                                                 <p className="font-serif text-lg text-[#1A1A1A]">
-                                                    {formatRent(
-                                                        property.rent
-                                                    )}
+                                                    {formatRent(property.rent)}
                                                 </p>
 
                                                 <p className="mt-1 font-sans text-[8px] uppercase tracking-[0.12em] text-[#9A938E]">
@@ -298,21 +293,19 @@ const MyProperties = async () => {
 
                                             {/* Actions */}
                                             <div className="flex items-center justify-end gap-1">
+                                                {/* Edit */}
                                                 <Link
-                                                    href={`/dashboard/owner/properties/${propertyId}/edit`}
+                                                    href={`/dashboard/edit/${propertyId}`}
                                                     aria-label={`Edit ${property.title}`}
                                                     className="flex h-9 w-9 items-center justify-center text-[#8A6E68] transition hover:bg-[#EEE9E4]"
                                                 >
-                                                    <FiArrowUpRight className="text-sm" />
+                                                    <FiEdit3 className="text-sm" />
                                                 </Link>
 
-                                                <button
-                                                    type="button"
-                                                    aria-label={`Delete ${property.title}`}
-                                                    className="flex h-9 w-9 items-center justify-center text-[#A09A95] transition hover:bg-[#8A6E68]/5 hover:text-[#8A6E68]"
-                                                >
-                                                    <FiTrash2 className="text-sm" />
-                                                </button>
+                                                {/* Delete */}
+                                                <DeletePropertyButton
+                                                    property={property}
+                                                />
                                             </div>
                                         </div>
                                     );
@@ -440,18 +433,14 @@ const MyProperties = async () => {
                                                 {/* Details */}
                                                 <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
                                                     <span className="font-sans text-[8px] uppercase tracking-[0.12em] text-[#77716D]">
-                                                        {
-                                                            property.bedrooms
-                                                        }{" "}
+                                                        {property.bedrooms}{" "}
                                                         Bedrooms
                                                     </span>
 
                                                     <span className="h-3 w-px bg-[#1A1A1A]/15" />
 
                                                     <span className="font-sans text-[8px] uppercase tracking-[0.12em] text-[#77716D]">
-                                                        {
-                                                            property.bathrooms
-                                                        }{" "}
+                                                        {property.bathrooms}{" "}
                                                         Bathrooms
                                                     </span>
 
@@ -469,20 +458,18 @@ const MyProperties = async () => {
                                                 {/* Actions */}
                                                 <div className="mt-6 flex items-center justify-between border-t border-[#1A1A1A]/10 pt-4">
                                                     <Link
-                                                        href={`/dashboard/owner/properties/${propertyId}/edit`}
+                                                        href={`/dashboard/edit/${propertyId}`}
                                                         className="group inline-flex items-center gap-2 font-sans text-[9px] uppercase tracking-[0.18em] text-[#403B38] transition hover:text-[#8A6E68]"
                                                     >
                                                         Edit Property
+
                                                         <FiArrowUpRight className="text-xs transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                                                     </Link>
 
-                                                    <button
-                                                        type="button"
-                                                        className="group inline-flex items-center gap-2 font-sans text-[9px] uppercase tracking-[0.18em] text-[#96908B] transition hover:text-[#8A6E68]"
-                                                    >
-                                                        <FiTrash2 className="text-xs" />
-                                                        Delete
-                                                    </button>
+                                                    <DeletePropertyButton
+                                                        property={property}
+                                                        mobile
+                                                    />
                                                 </div>
 
                                                 {/* Rejection Feedback */}
