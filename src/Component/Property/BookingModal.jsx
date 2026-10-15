@@ -304,18 +304,25 @@ const BookingModal = ({ isOpen, onClose, property, user }) => {
                             Cancel
                         </Button>
 
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            isDisabled={isBookingSubmitting}
-                            className="h-12 rounded-none bg-[#1A1A1A] px-6 font-sans text-[9px] uppercase tracking-[0.2em] text-white hover:bg-[#8A6E68]"
-                        >
-                            {isBookingSubmitting
-                                ? "Continuing..."
-                                : "Continue to Payment"}
+                        <form action="/api/checkout_sessions" method="POST">
+                            <section>
+                                <Button
+                                    type="submit"
+                                    role="link"
+                                    variant="primary"
+                                    isDisabled={isBookingSubmitting}
+                                    className="h-12 rounded-none bg-[#1A1A1A] px-6 font-sans text-[9px] uppercase tracking-[0.2em] text-white hover:bg-[#8A6E68]"
+                                >
+                                    {isBookingSubmitting
+                                        ? "Continuing..."
+                                        : "Continue to Payment"}
 
-                            {!isBookingSubmitting && <FiArrowUpRight />}
-                        </Button>
+                                    {!isBookingSubmitting && <FiArrowUpRight />}
+                                </Button>
+                            </section>
+                        </form>
+
+
                     </div>
                 </form>
             </div>
