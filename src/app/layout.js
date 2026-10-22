@@ -2,6 +2,7 @@ import { Lora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/Component/HomePage/Navbar";
 import Footer from "@/Component/HomePage/Footer";
+import { Toast } from "@heroui/react";
 
 const lora = Lora({
   variable: "--font-main",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         </div>
         
         {children}
+        <Toast.Provider />
         <Footer />
         </body>
     </html>

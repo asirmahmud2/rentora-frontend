@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@heroui/react";
+import { Button, toast, Toast } from "@heroui/react";
 
 import {
     FiArrowLeft,
@@ -73,18 +73,15 @@ const PropertyDetailsDesign = ({ property, user }) => {
 
         try {
             if (!isFavorite) {
-                const newFavorite = {
-                    ...property,
-                    propertyId: property._id,
-                    userId: user.id,
-                };
+                const { _id, ...rest } = property;
+                const newFavorite = { ...rest, propertyId: _id, userId: user.id };
 
                 const response = await AddFavorite(newFavorite, user.id);
 
                 if (!response.ok) {
                     throw new Error("Failed to add favorite");
                 }
-
+                toast.success("Property added to favorites!");
                 setIsFavorite(true);
 
                 console.log("Added favorite:", response.data);
@@ -287,8 +284,8 @@ const PropertyDetailsDesign = ({ property, user }) => {
                                         type="button"
                                         onClick={() => swiperRef.current?.slideTo(index)}
                                         className={`relative h-20 w-28 shrink-0 overflow-hidden bg-[#EEE9E4] sm:h-24 sm:w-36 ${activeImage === index
-                                                ? "ring-1 ring-[#8A6E68] ring-offset-2"
-                                                : ""
+                                            ? "ring-1 ring-[#8A6E68] ring-offset-2"
+                                            : ""
                                             }`}
                                         aria-label={`View image ${index + 1}`}
                                     >
@@ -394,7 +391,12 @@ const PropertyDetailsDesign = ({ property, user }) => {
                                 variant="primary"
                                 onPress={() => {
                                     if (!user) {
+                                        toast.danger("You must be logged in to book a property.");
                                         router.push("/login");
+                                        return;
+                                    }
+                                    if (user.role !== "Tenant") {
+                                        toast.danger("Only tenants can book properties. Please log in with a tenant account.");
                                         return;
                                     }
 
@@ -807,7 +809,12 @@ const PropertyDetailsDesign = ({ property, user }) => {
                         variant="primary"
                         onPress={() => {
                             if (!user) {
+                                toast.danger("You must be logged in to book a property.");
                                 router.push("/login");
+                                return;
+                            }
+                            if (user.role !== "Tenant") {
+                                toast.danger("Only tenants can book properties. Please log in with a tenant account.");
                                 return;
                             }
 

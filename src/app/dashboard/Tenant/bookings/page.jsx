@@ -1,61 +1,68 @@
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 import {
     FiArrowUpRight,
     FiCalendar,
+    FiChevronRight,
     FiClock,
     FiMapPin,
-    FiChevronRight,
 } from "react-icons/fi";
+import { getUserBooking } from "@/app/Server/Actions/booking";
+import { getProperty } from "@/app/Server/api/mutation";
+import { getUser } from "@/lib/getUser";
 
-const MyBooking = () => {
-    // Fetch your booking data later.
-    // Expected example:
-    //
-    // const bookings = [
-    //     {
-    //         _id: "booking-id",
-    //         property: {
-    //             _id: "property-id",
-    //             title: "Elegant Gulshan Lake Residence",
-    //             image: "https://...",
-    //             location: "Gulshan-2, Dhaka",
-    //         },
-    //         moveInDate: "2026-10-15",
-    //         bookingDate: "2026-09-28",
-    //         rent: 85000,
-    //         status: "Approved",
-    //     },
-    // ];
+const tabs = ["All", "Pending", "Approved", "Rejected"];
 
-    const bookings = [];
+const statusColor = {
+    Pending: "#8A6E68",
+    Approved: "#5B6D5B",
+    Rejected: "#9A6660",
+};
 
-    const statusTabs = [
-        { label: "All", value: "All" },
-        { label: "Pending", value: "Pending" },
-        { label: "Approved", value: "Approved" },
-        { label: "Rejected", value: "Rejected" },
-    ];
+const formatDate = (date) =>
+    new Date(date).toLocaleDateString("en-BD", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+
+const formatPrice = (amount) => `৳${Number(amount).toLocaleString("en-BD")}`;
+
+const MyBooking = async ({ searchParams }) => {
+    const { status = "All" } = await searchParams;
+    const user = await getUser();
+    const userId = user?.id;
+    const filtered = await getUserBooking(userId, status);
+    const allBookings = await getUserBooking(userId, "All");
+
+    // Attach the property to each booking
+    const bookings = await Promise.all(
+        filtered.map(async (booking) => {
+            const [property] = await getProperty(booking.propertyId);
+            return { ...booking, property };
+        })
+    );
+
+    const count = (tab) =>
+        tab === "All"
+            ? allBookings.length
+            : allBookings.filter((b) => b.bookingStatus === tab).length;
 
     return (
         <main className="min-h-screen bg-[#FDFCF9] text-[#1A1A1A]">
             <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-
                 {/* Header */}
                 <section className="border-b border-[#1A1A1A]/10 pb-10">
                     <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
                         <div>
                             <div className="mb-5 flex items-center gap-4">
                                 <span className="h-px w-8 bg-[#8A6E68]" />
-
                                 <span className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#9B9690]">
                                     Tenant / Bookings
                                 </span>
                             </div>
 
-                            <h1 className="max-w-3xl font-serif text-5xl leading-[0.95] tracking-[-0.03em] text-[#171717] sm:text-6xl lg:text-7xl">
+                            <h1 className="max-w-3xl font-serif text-5xl leading-[0.95] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
                                 Your
                                 <span className="italic text-[#8A6E68]"> reservations.</span>
                             </h1>
@@ -66,248 +73,192 @@ const MyBooking = () => {
                             </p>
                         </div>
 
-                        {/* Summary */}
                         <div className="flex gap-8 border-l border-[#1A1A1A]/10 pl-6 lg:min-w-[230px]">
-                            <div>
-                                <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#9B9690]">
-                                    Total
-                                </p>
-
-                                <p className="mt-2 font-serif text-4xl text-[#171717]">
-                                    {bookings.length || "—"}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#9B9690]">
-                                    Active
-                                </p>
-
-                                <p className="mt-2 font-serif text-4xl text-[#171717]">
-                                    {bookings.filter(
-                                        (booking) => booking.status === "Approved"
-                                    ).length || "—"}
-                                </p>
-                            </div>
+                            {[
+                                ["Total", count("All")],
+                                ["Approved", count("Approved")],
+                            ].map(([label, value]) => (
+                                <div key={label}>
+                                    <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#9B9690]">
+                                        {label}
+                                    </p>
+                                    <p className="mt-2 font-serif text-4xl">{value || "—"}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Filter / Controls */}
+                {/* Status tabs */}
                 <section className="border-b border-[#1A1A1A]/10 py-6">
                     <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                        <nav className="flex flex-wrap gap-x-6 gap-y-3">
+                            {tabs.map((tab) => {
+                                const active = tab === status;
+                                return (
+                                    <Link
+                                        key={tab}
+                                        href={tab === "All" ? "?" : `?status=${tab}`}
+                                        className={`relative pb-2 font-sans text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                                            active
+                                                ? "text-[#1A1A1A]"
+                                                : "text-[#96918C] hover:text-[#1A1A1A]"
+                                        }`}
+                                    >
+                                        {tab}
+                                        <span className="ml-2 text-[#8A6E68]">{count(tab)}</span>
+                                        {active && (
+                                            <span className="absolute bottom-0 left-0 h-px w-full bg-[#8A6E68]" />
+                                        )}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
 
-                        {/* Status Tabs */}
-                        <div className="flex flex-wrap gap-x-6 gap-y-3">
-                            {statusTabs.map((tab) => (
-                                <button
-                                    key={tab.value}
-                                    type="button"
-                                    className={`group relative pb-2 font-sans text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 ${
-                                        tab.value === "All"
-                                            ? "text-[#1A1A1A]"
-                                            : "text-[#96918C] hover:text-[#1A1A1A]"
-                                    }`}
-                                >
-                                    {tab.label}
-
-                                    {tab.value === "All" && (
-                                        <span className="absolute bottom-0 left-0 h-px w-full bg-[#8A6E68]" />
-                                    )}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Result Label */}
                         <div className="flex items-center gap-3">
                             <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#A09A95]">
                                 Showing
                             </span>
-
-                            <span className="font-serif text-lg text-[#1A1A1A]">
+                            <span className="font-serif text-lg">
                                 {bookings.length === 0
                                     ? "No reservations"
-                                    : `${bookings.length} reservations`}
+                                    : `${bookings.length} reservation${bookings.length > 1 ? "s" : ""}`}
                             </span>
                         </div>
                     </div>
                 </section>
 
-                {/* Booking List */}
+                {/* Booking list */}
                 <section className="py-10 lg:py-14">
-
                     {bookings.length > 0 ? (
                         <div className="space-y-5">
-                            {bookings.map((booking, index) => (
-                                <article
-                                    key={booking._id}
-                                    className="group border border-[#1A1A1A]/10 bg-white transition-all duration-500 hover:border-[#8A6E68]/40"
-                                >
-                                    <div className="grid lg:grid-cols-[280px_1fr_auto]">
+                            {bookings.map((booking) => {
+                                const { property } = booking;
+                                const color = statusColor[booking.bookingStatus] ?? statusColor.Pending;
+                                const { area, city } = property?.location ?? {};
 
-                                        {/* Property Image */}
-                                        <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:min-h-[220px]">
-                                            <Image
-                                                src={booking.property?.image}
-                                                alt={booking.property?.title || "Property"}
-                                                fill
-                                                sizes="(max-width: 1024px) 100vw, 280px"
-                                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                            />
+                                return (
+                                    <article
+                                        key={booking._id}
+                                        className="group border border-[#1A1A1A]/10 bg-white transition-all duration-500 hover:border-[#8A6E68]/40"
+                                    >
+                                        <div className="grid lg:grid-cols-[280px_1fr_auto]">
+                                            {/* Image */}
+                                            <div className="relative aspect-[4/3] overflow-hidden bg-[#EEE9E4] lg:aspect-auto lg:min-h-[220px]">
+                                                {property?.images?.[0] && (
+                                                    <Image
+                                                        src={property.images[0]}
+                                                        alt={property.title}
+                                                        fill
+                                                        sizes="(max-width: 1024px) 100vw, 280px"
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                    />
+                                                )}
 
-                                            <div className="absolute left-4 top-4">
                                                 <span
-                                                    className={`inline-flex items-center gap-2 bg-white/95 px-3 py-2 font-sans text-[9px] uppercase tracking-[0.16em] ${
-                                                        booking.status === "Approved"
-                                                            ? "text-[#5B6D5B]"
-                                                            : booking.status === "Rejected"
-                                                                ? "text-[#9A6660]"
-                                                                : "text-[#8A6E68]"
-                                                    }`}
+                                                    style={{ color }}
+                                                    className="absolute left-4 top-4 inline-flex items-center gap-2 bg-white/95 px-3 py-2 font-sans text-[9px] uppercase tracking-[0.16em]"
                                                 >
                                                     <span
-                                                        className={`h-1.5 w-1.5 rounded-full ${
-                                                            booking.status === "Approved"
-                                                                ? "bg-[#5B6D5B]"
-                                                                : booking.status === "Rejected"
-                                                                    ? "bg-[#9A6660]"
-                                                                    : "bg-[#8A6E68]"
-                                                        }`}
+                                                        style={{ backgroundColor: color }}
+                                                        className="h-1.5 w-1.5 rounded-full"
                                                     />
-
-                                                    {booking.status}
+                                                    {booking.bookingStatus}
                                                 </span>
                                             </div>
-                                        </div>
 
-                                        {/* Booking Information */}
-                                        <div className="flex flex-col justify-between p-6 sm:p-7 lg:p-8">
+                                            {/* Info */}
+                                            <div className="flex flex-col justify-between p-6 sm:p-7 lg:p-8">
+                                                <div>
+                                                    <p className="mb-4 font-sans text-[9px] uppercase tracking-[0.2em] text-[#AAA49F]">
+                                                        Ref · <span className="text-[#8A6E68]">{String(booking._id).slice(-6)}</span>
+                                                    </p>
 
-                                            <div>
-                                                <div className="mb-4 flex items-center gap-3">
-                                                    <span className="font-sans text-[9px] tracking-[0.2em] text-[#8A6E68]">
-                                                        {String(index + 1).padStart(2, "0")}
-                                                    </span>
+                                                    <h2 className="font-serif text-2xl leading-tight sm:text-3xl">
+                                                        {property?.title ?? "Property unavailable"}
+                                                    </h2>
 
-                                                    <span className="h-px w-5 bg-[#1A1A1A]/10" />
-
-                                                    <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#AAA49F]">
-                                                        Reservation
-                                                    </span>
+                                                    <div className="mt-3 flex items-center gap-2 text-[#77716C]">
+                                                        <FiMapPin className="text-sm" />
+                                                        <span className="font-sans text-xs">
+                                                            {[area, city].filter(Boolean).join(", ")}
+                                                        </span>
+                                                    </div>
                                                 </div>
 
-                                                <h2 className="font-serif text-2xl leading-tight text-[#1A1A1A] sm:text-3xl">
-                                                    {booking.property?.title}
-                                                </h2>
+                                                <div className="mt-8 grid grid-cols-2 gap-5 border-t border-[#1A1A1A]/10 pt-6 sm:grid-cols-4">
+                                                    <div>
+                                                        <p className="mb-2 flex items-center gap-2 font-sans text-[8px] uppercase tracking-[0.16em] text-[#A19B96]">
+                                                            <FiCalendar className="text-xs" /> Move-in
+                                                        </p>
+                                                        <p className="font-sans text-xs text-[#34312F]">
+                                                            {formatDate(booking.moveInDate)}
+                                                        </p>
+                                                    </div>
 
-                                                <div className="mt-3 flex items-center gap-2 text-[#77716C]">
-                                                    <FiMapPin className="text-sm" />
+                                                    <div>
+                                                        <p className="mb-2 flex items-center gap-2 font-sans text-[8px] uppercase tracking-[0.16em] text-[#A19B96]">
+                                                            <FiCalendar className="text-xs" /> Move-out
+                                                        </p>
+                                                        <p className="font-sans text-xs text-[#34312F]">
+                                                            {formatDate(booking.moveOutDate)}
+                                                        </p>
+                                                    </div>
 
-                                                    <span className="font-sans text-xs">
-                                                        {booking.property?.location}
-                                                    </span>
+                                                    <div>
+                                                        <p className="mb-2 font-sans text-[8px] uppercase tracking-[0.16em] text-[#A19B96]">
+                                                            Total paid
+                                                        </p>
+                                                        <p className="font-serif text-lg">
+                                                            {formatPrice(booking.totalAmount)}
+                                                        </p>
+                                                    </div>
+
+                                                    <div>
+                                                        <p className="mb-2 flex items-center gap-2 font-sans text-[8px] uppercase tracking-[0.16em] text-[#A19B96]">
+                                                            <FiClock className="text-xs" /> Booked
+                                                        </p>
+                                                        <p className="font-sans text-xs text-[#34312F]">
+                                                            {formatDate(booking.createdAt)}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            {/* Details */}
-                                            <div className="mt-8 grid grid-cols-2 gap-5 border-t border-[#1A1A1A]/8 pt-6 sm:grid-cols-4">
-
-                                                <div>
-                                                    <div className="mb-2 flex items-center gap-2 text-[#A19B96]">
-                                                        <FiCalendar className="text-xs" />
-
-                                                        <span className="font-sans text-[8px] uppercase tracking-[0.16em]">
-                                                            Move-in
-                                                        </span>
-                                                    </div>
-
-                                                    <p className="font-sans text-xs text-[#34312F]">
-                                                        {booking.moveInDate}
-                                                    </p>
-                                                </div>
-
-                                                <div>
-                                                    <div className="mb-2 flex items-center gap-2 text-[#A19B96]">
-                                                        <FiClock className="text-xs" />
-
-                                                        <span className="font-sans text-[8px] uppercase tracking-[0.16em]">
-                                                            Booked
-                                                        </span>
-                                                    </div>
-
-                                                    <p className="font-sans text-xs text-[#34312F]">
-                                                        {booking.bookingDate}
-                                                    </p>
-                                                </div>
-
-                                                <div>
-                                                    <span className="mb-2 block font-sans text-[8px] uppercase tracking-[0.16em] text-[#A19B96]">
-                                                        Rent
+                                            {/* Action */}
+                                            <div className="flex items-center border-t border-[#1A1A1A]/10 p-5 lg:border-l lg:border-t-0 lg:p-7">
+                                                <Link
+                                                    href={`/dashboard/tenant/bookings/${booking._id}`}
+                                                    className="group/action flex w-full items-center justify-between gap-5 border border-[#1A1A1A]/10 px-5 py-4 transition-all duration-300 hover:border-[#8A6E68] hover:bg-[#F8F5F1] lg:w-auto"
+                                                >
+                                                    <span className="font-sans text-[9px] uppercase tracking-[0.18em]">
+                                                        View Details
                                                     </span>
-
-                                                    <p className="font-serif text-lg text-[#1A1A1A]">
-                                                        ৳{booking.rent?.toLocaleString()}
-                                                    </p>
-                                                </div>
-
-                                                <div>
-                                                    <span className="mb-2 block font-sans text-[8px] uppercase tracking-[0.16em] text-[#A19B96]">
-                                                        Booking ID
-                                                    </span>
-
-                                                    <p className="max-w-[130px] truncate font-sans text-xs text-[#34312F]">
-                                                        {booking._id}
-                                                    </p>
-                                                </div>
+                                                    <FiArrowUpRight className="text-sm transition-transform duration-300 group-hover/action:-translate-y-0.5 group-hover/action:translate-x-0.5" />
+                                                </Link>
                                             </div>
                                         </div>
-
-                                        {/* Action */}
-                                        <div className="flex items-center border-t border-[#1A1A1A]/10 p-5 lg:border-l lg:border-t-0 lg:p-7">
-                                            <Link
-                                                href={`/dashboard/tenant/bookings/${booking._id}`}
-                                                className="group/action flex w-full items-center justify-between gap-5 border border-[#1A1A1A]/10 px-5 py-4 transition-all duration-300 hover:border-[#8A6E68] hover:bg-[#F8F5F1] lg:w-auto"
-                                            >
-                                                <span className="font-sans text-[9px] uppercase tracking-[0.18em]">
-                                                    View Details
-                                                </span>
-
-                                                <FiArrowUpRight className="text-sm transition-transform duration-300 group-hover/action:-translate-y-0.5 group-hover/action:translate-x-0.5" />
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
+                                    </article>
+                                );
+                            })}
                         </div>
                     ) : (
-                        /* Empty State */
+                        /* Empty state */
                         <div className="relative overflow-hidden border border-[#1A1A1A]/10 bg-white px-6 py-20 sm:px-10 lg:px-20 lg:py-28">
-
-                            {/* Decorative Letter */}
-                            <span className="pointer-events-none absolute -right-3 -top-12 font-serif text-[220px] leading-none text-[#EEEAE6] select-none sm:text-[280px]">
+                            <span className="pointer-events-none absolute -right-3 -top-12 select-none font-serif text-[220px] leading-none text-[#EEEAE6] sm:text-[280px]">
                                 R
                             </span>
 
                             <div className="relative max-w-2xl">
-                                <div className="mb-6 flex items-center gap-4">
-                                    <span className="font-sans text-[10px] tracking-[0.18em] text-[#8A6E68]">
-                                        01
-                                    </span>
-
-                                    <span className="h-px w-8 bg-[#1A1A1A]/10" />
-                                </div>
-
-                                <h2 className="font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-[#1A1A1A] sm:text-5xl">
-                                    Nothing reserved,
-                                    <span className="italic text-[#8A6E68]">
-                                        {" "}yet.
-                                    </span>
+                                <h2 className="font-serif text-4xl leading-[1.05] tracking-[-0.02em] sm:text-5xl">
+                                    {status === "All" ? "Nothing reserved," : `No ${status.toLowerCase()} bookings,`}
+                                    <span className="italic text-[#8A6E68]"> yet.</span>
                                 </h2>
 
                                 <p className="mt-6 max-w-lg font-sans text-sm leading-7 text-[#716C67]">
-                                    Your booked properties will appear here once
-                                    you make a reservation. Explore available
-                                    homes and find a place that feels right.
+                                    Your booked properties will appear here once you
+                                    make a reservation. Explore available homes and
+                                    find a place that feels right.
                                 </p>
 
                                 <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -316,35 +267,20 @@ const MyBooking = () => {
                                         className="group inline-flex items-center justify-center gap-5 bg-[#1A1A1A] px-6 py-4 font-sans text-[9px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:bg-[#8A6E68]"
                                     >
                                         Explore Properties
-
-                                        <FiArrowUpRight className="text-sm transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                                        <FiArrowUpRight className="text-sm" />
                                     </Link>
 
                                     <Link
                                         href="/dashboard/tenant/favorites"
-                                        className="group inline-flex items-center justify-center gap-3 border border-[#1A1A1A]/10 px-6 py-4 font-sans text-[9px] uppercase tracking-[0.2em] text-[#1A1A1A] transition-all duration-300 hover:border-[#8A6E68]"
+                                        className="group inline-flex items-center justify-center gap-3 border border-[#1A1A1A]/10 px-6 py-4 font-sans text-[9px] uppercase tracking-[0.2em] transition-all duration-300 hover:border-[#8A6E68]"
                                     >
                                         View Favorites
-
                                         <FiChevronRight className="text-sm transition-transform duration-300 group-hover:translate-x-1" />
                                     </Link>
                                 </div>
                             </div>
                         </div>
                     )}
-                </section>
-
-                {/* Bottom Note */}
-                <section className="border-t border-[#1A1A1A]/10 pt-8">
-                    <div className="flex flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
-                        <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#A09A95]">
-                            RENTORA / My Bookings
-                        </p>
-
-                        <p className="font-serif text-sm italic text-[#85807B]">
-                            Find a place worth coming home to.
-                        </p>
-                    </div>
                 </section>
             </div>
         </main>
