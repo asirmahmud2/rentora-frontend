@@ -24,3 +24,7 @@ export const updateBookingStatus = async (bookingId, bookingStatus) => {
 
     return res;
 };
+
+export const transactionHistory = async (status="All") => {
+    return ServerQuery(`/api/transactions?status=${status}`);
+}
