@@ -43,6 +43,7 @@ const PaymentSuccessful = async ({ searchParams }) => {
         sessionId: session.id,
         totalAmount,
         ...session.metadata,
+        transactionId: session.payment_intent,
     });
     console.log("AddBooking:", res.status, res.data);
 
