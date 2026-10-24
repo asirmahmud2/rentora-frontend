@@ -14,3 +14,7 @@ export const AddReview = async (review) => {
     }
     return res;
 };
+
+export const getTopReviews = async () => {
+    return ServerQuery(`/api/reviews/top`);
+};
