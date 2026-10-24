@@ -34,3 +34,7 @@ export const UpdateProperty = async (data, id) => {
     revalidatePath(`/dashboard/Tenant/properties`, 'layout');
     return result;
 }
+
+export const featuredProperty = async () => {
+    return ServerQuery(`/api/properties/featured`);
+}

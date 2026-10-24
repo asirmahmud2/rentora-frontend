@@ -43,13 +43,6 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
         return `৳${Number(rent || 0).toLocaleString("en-BD")}`;
     };
 
-    /*
-     * Check favorite status for every property.
-     *
-     * This is the same checkFavorite() flow used
-     * on the Property Details page, adapted for
-     * multiple properties.
-     */
     useEffect(() => {
         const favStatus = async () => {
             if (!user?.id || !properties?.length) {
@@ -93,16 +86,6 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
         favStatus();
     }, [properties, user?.id]);
 
-    /*
-     * Same favorite functionality used in PropertyDetailsDesign.
-     *
-     *
-     * If property is not favorite:
-     * -> add full property object + propertyId + userId
-     *
-     * If property is already favorite:
-     * -> remove it
-     */
     const handleFavorite = async (property) => {
 
         const propertyId = property?._id?.toString();
@@ -220,14 +203,6 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
         }
     };
 
-    /*
-     * Takes the values from the filter fields and converts
-     * them into URL search parameters.
-     *
-     * The server page reads these parameters and sends them
-     * to getAllProperties(), where MongoDB performs the
-     * actual filtering.
-     */
     const handleFilterSubmit = (event) => {
         event.preventDefault();
 

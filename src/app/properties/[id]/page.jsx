@@ -3,6 +3,7 @@ import { CheckLogin, getUser } from "@/lib/getUser";
 
 import { getProperty } from "@/app/Server/api/mutation";
 import PropertyDetailsDesign from "./PropertyDetailsDesign";
+import { getPropertyReviews } from "@/app/Server/Actions/Review";
 
 const PropertyDetailsPage = async ({ params }) => {
     await CheckLogin();
@@ -14,6 +15,8 @@ const PropertyDetailsPage = async ({ params }) => {
         : result;
 
     const user = await getUser();
+    const res = await getPropertyReviews(property._id);
+    const reviews = Array.isArray(res) ? res : [];
 
     if (!property) {
         return (
@@ -41,7 +44,7 @@ const PropertyDetailsPage = async ({ params }) => {
         <PropertyDetailsDesign
             property={property}
             user={user}
-        />
+            reviews={reviews} />
     );
 };
 

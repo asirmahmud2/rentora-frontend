@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/Component/HomePage/Navbar";
 import Footer from "@/Component/HomePage/Footer";
 import { Toast } from "@heroui/react";
+import HeroSection from "@/Component/HomePage/HeroSection";
 
 const lora = Lora({
   variable: "--font-main",
