@@ -13,52 +13,21 @@ import {
     FiChevronRight,
 } from "react-icons/fi";
 import { AllProperties, AllUsers } from "@/app/Server/Actions/CountData";
+import { getUserBooking, transactionHistory } from "@/app/Server/Actions/booking";
 
 const AdminDashboard = async () => {
     // Connect your backend data here later.
     const usersCount = await AllUsers();
     const Properties = await AllProperties();
+    const bookingsCount = await getUserBooking("All");
+    const transactionsCount = await transactionHistory("All");
     const stats = {
         users: usersCount.length || 0,
         properties: Properties.length || 0,
-        bookings: 0,
-        transactions: 0,
+        bookings: bookingsCount.length || 0,
+        transactions: transactionsCount.length || 0,
     };
 
-    const managementLinks = [
-        {
-            number: "01",
-            title: "Users",
-            description: "Manage accounts, roles and platform access.",
-            count: stats.users,
-            href: "/dashboard/admin/users",
-            icon: FiUsers,
-        },
-        {
-            number: "02",
-            title: "Properties",
-            description: "Review, approve, reject and manage listings.",
-            count: stats.properties,
-            href: "/dashboard/admin/properties",
-            icon: FiHome,
-        },
-        {
-            number: "03",
-            title: "Bookings",
-            description: "Review reservations and booking activity.",
-            count: stats.bookings,
-            href: "/dashboard/admin/bookings",
-            icon: FiCalendar,
-        },
-        {
-            number: "04",
-            title: "Transactions",
-            description: "View successful payments and transaction records.",
-            count: stats.transactions,
-            href: "/dashboard/admin/transactions",
-            icon: FiCreditCard,
-        },
-    ];
 
     return (
         <main className="min-h-screen bg-[#FDFCF9] text-[#1A1A1A]">
@@ -272,7 +241,7 @@ const AdminDashboard = async () => {
                         <div className="space-y-1">
 
                             <Link
-                                href="/dashboard/admin/users"
+                                href="/dashboard/Admin/users"
                                 className="group flex items-center justify-between border-b border-[#1A1A1A]/8 py-5"
                             >
                                 <div className="flex items-center gap-4">
@@ -287,7 +256,7 @@ const AdminDashboard = async () => {
                             </Link>
 
                             <Link
-                                href="/dashboard/admin/properties"
+                                href="/dashboard/Admin/properties"
                                 className="group flex items-center justify-between border-b border-[#1A1A1A]/8 py-5"
                             >
                                 <div className="flex items-center gap-4">
@@ -302,7 +271,7 @@ const AdminDashboard = async () => {
                             </Link>
 
                             <Link
-                                href="/dashboard/admin/bookings"
+                                href="/dashboard/Admin/bookings"
                                 className="group flex items-center justify-between border-b border-[#1A1A1A]/8 py-5"
                             >
                                 <div className="flex items-center gap-4">
@@ -317,7 +286,7 @@ const AdminDashboard = async () => {
                             </Link>
 
                             <Link
-                                href="/dashboard/admin/transactions"
+                                href="/dashboard/Admin/transactions"
                                 className="group flex items-center justify-between border-b border-[#1A1A1A]/8 py-5"
                             >
                                 <div className="flex items-center gap-4">
@@ -332,7 +301,7 @@ const AdminDashboard = async () => {
                             </Link>
 
                             <Link
-                                href="/dashboard/admin/settings"
+                                href="/dashboard/Admin/settings"
                                 className="group flex items-center justify-between py-5"
                             >
                                 <div className="flex items-center gap-4">

@@ -281,7 +281,7 @@ const AddProperties = () => {
             };
 
             /* Change this endpoint if your backend uses a different route. */
-            const response = await createProperty(propertyData,user?.id);
+            const response = await createProperty(propertyData, user?.id);
 
             if (!response.ok) {
                 throw new Error(response.data.message || "Unable to create the property.");

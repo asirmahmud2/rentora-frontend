@@ -14,21 +14,30 @@ export const getProperty = async (id) => {
 
 export const getAllProperties = async (status = "Approved", filter = {}) => {
     const searchParams = new URLSearchParams();
-    // Status is always required.
     searchParams.set("status", status);
-    // Add location only when the user provides it.
     if (filter.location) {
         searchParams.set("location", filter.location);
     }
-    // Add property type only when selected.
     if (filter.propertyType) {
         searchParams.set("propertyType", filter.propertyType);
     }
-    // Add sorting only when selected.
     if (filter.sort) {
         searchParams.set("sort", filter.sort);
     }
-
-    // Add the search parameters to the URL.
     return ServerQuery(`/api/properties?${searchParams.toString()}`, "GET");
+};
+
+export const getApprovedProperties = async (status = "Approved", filter = {}) => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("status", status);
+    if (filter.location) {
+        searchParams.set("location", filter.location);
+    }
+    if (filter.propertyType) {
+        searchParams.set("propertyType", filter.propertyType);
+    }
+    if (filter.sort) {
+        searchParams.set("sort", filter.sort);
+    }
+    return ServerQuery(`/api/properties/public?${searchParams.toString()}`, "GET");
 };

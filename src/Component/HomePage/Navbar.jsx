@@ -21,7 +21,7 @@ import { authClient } from "@/lib/auth-client";
 const Navbar = () => {
     const pathname = usePathname();
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, FmobsetIsMenuOpen] = useState(false);
 
     // Better Auth session
     const { data: session } = authClient.useSession();

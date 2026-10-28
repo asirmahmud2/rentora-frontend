@@ -13,17 +13,24 @@ import {
     FiMapPin,
 } from "react-icons/fi";
 import { GetFavorites } from "@/app/Server/Actions/Favorite";
+import { getUserBooking } from "@/app/Server/Actions/booking";
 
 const TenantPage = async () => {
     const user = await getUser();
+    const AllBooking = await getUserBooking();
     const AllFavorite = await GetFavorites(user.id);
 
     // Make sure the page always has an array to work with.
     const favorites = Array.isArray(AllFavorite)
         ? AllFavorite
         : [];
-    const totalBookings = 5;
-    const activeBookings = 1;
+
+    const bookings = Array.isArray(AllBooking)
+        ? AllBooking
+        : [];
+
+    const totalBookings = bookings.length;
+    const activeBookings = bookings.filter((booking) => booking.bookingStatus === "Approved").length;
     const favoriteCount = favorites.length;
 
     return (

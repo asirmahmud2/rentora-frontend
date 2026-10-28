@@ -1,7 +1,7 @@
 import React from "react";
 
 import AllPropertyDesign from "./AllProperty";
-import { getAllProperties } from "../Server/api/mutation";
+import { getApprovedProperties } from "../Server/api/mutation";
 import { getUser } from "@/lib/getUser";
 
 
@@ -20,7 +20,7 @@ const AllProperties = async ({ searchParams }) => {
      * The filters are passed to the server function so the
      * actual filtering happens on the backend/database.
      */
-    const properties = await getAllProperties("Approved", filters);
+    const properties = await getApprovedProperties("Approved", filters);
     const user = await getUser();
 
     return (

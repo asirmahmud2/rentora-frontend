@@ -7,7 +7,7 @@ export const AddBooking = async (data) => {
     return ServerMutation(`/api/bookings`, data);
 }
 
-export const getUserBooking = async ( status="All" ) => {
+export const getUserBooking = async (status = "All") => {
     return ServerQuery(`/api/bookings?status=${status}`);
 };
 
@@ -25,6 +25,6 @@ export const updateBookingStatus = async (bookingId, bookingStatus) => {
     return res;
 };
 
-export const transactionHistory = async (status="All") => {
+export const transactionHistory = async (status = "All") => {
     return ServerQuery(`/api/transactions?status=${status}`);
 }

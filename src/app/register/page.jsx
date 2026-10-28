@@ -161,11 +161,6 @@ const RegisterPage = () => {
 
         try {
             setIsGoogleLoading(true);
-
-            /*
-             * The project requirement says Google users must
-             * automatically receive the Tenant role.
-             */
             await authClient.signIn.social({
                 provider: "google",
                 callbackURL: "/",

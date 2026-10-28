@@ -141,7 +141,7 @@ const AllPropertiesTable = ({ properties }) => {
                                             {/* Property */}
                                             <td className="px-6 py-5">
                                                 <Link
-                                                    href={`/property/${property._id}`}
+                                                    href={`/properties/${property._id}`}
                                                     className="group flex items-center gap-4"
                                                 >
                                                     <div className="relative h-14 w-20 shrink-0 overflow-hidden bg-[#EEE9E4]">
@@ -259,36 +259,36 @@ const AllPropertiesTable = ({ properties }) => {
                                                     {/* Approve */}
                                                     {property.status !==
                                                         "Approved" && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                handleApprove(
-                                                                    property
-                                                                )
-                                                            }
-                                                            title="Approve"
-                                                            className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#627262] transition-all duration-300 hover:border-[#627262] hover:bg-[#F2F6F2]"
-                                                        >
-                                                            <FiCheck className="text-sm" />
-                                                        </button>
-                                                    )}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleApprove(
+                                                                        property
+                                                                    )
+                                                                }
+                                                                title="Approve"
+                                                                className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#627262] transition-all duration-300 hover:border-[#627262] hover:bg-[#F2F6F2]"
+                                                            >
+                                                                <FiCheck className="text-sm" />
+                                                            </button>
+                                                        )}
 
                                                     {/* Reject */}
                                                     {property.status !==
                                                         "Rejected" && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                openRejectModal(
-                                                                    property
-                                                                )
-                                                            }
-                                                            title="Reject"
-                                                            className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#9A6963] transition-all duration-300 hover:border-[#9A6963] hover:bg-[#FBF4F2]"
-                                                        >
-                                                            <FiX className="text-sm" />
-                                                        </button>
-                                                    )}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    openRejectModal(
+                                                                        property
+                                                                    )
+                                                                }
+                                                                title="Reject"
+                                                                className="flex h-9 w-9 items-center justify-center border border-[#1A1A1A]/10 text-[#9A6963] transition-all duration-300 hover:border-[#9A6963] hover:bg-[#FBF4F2]"
+                                                            >
+                                                                <FiX className="text-sm" />
+                                                            </button>
+                                                        )}
 
                                                     {/* Update */}
                                                     <Link
@@ -332,7 +332,7 @@ const AllPropertiesTable = ({ properties }) => {
                             >
                                 {/* Image + Heading */}
                                 <Link
-                                    href={`/property/${property._id}`}
+                                    href={`/properties/${property._id}`}
                                     className="group flex gap-4"
                                 >
                                     <div className="relative h-20 w-24 shrink-0 overflow-hidden bg-[#EEE9E4]">
@@ -445,7 +445,7 @@ const AllPropertiesTable = ({ properties }) => {
                                     )}
 
                                     <Link
-                                        href={`/dashboard/admin/properties/${property._id}/edit`}
+                                        href={`/dashboard/Admin/properties/${property._id}/edit`}
                                         className="flex items-center justify-center border-r border-[#1A1A1A]/8 text-[#6D6863]"
                                     >
                                         <FiEdit3 />
@@ -552,15 +552,13 @@ const StatusBadge = ({ status }) => {
 
     return (
         <span
-            className={`inline-flex items-center gap-2 px-3 py-2 font-sans text-[8px] uppercase tracking-[0.16em] ${
-                statusClasses[normalizedStatus] ||
+            className={`inline-flex items-center gap-2 px-3 py-2 font-sans text-[8px] uppercase tracking-[0.16em] ${statusClasses[normalizedStatus] ||
                 statusClasses.Pending
-            }`}
+                }`}
         >
             <span
-                className={`h-1.5 w-1.5 rounded-full ${
-                    dotClasses[normalizedStatus] || dotClasses.Pending
-                }`}
+                className={`h-1.5 w-1.5 rounded-full ${dotClasses[normalizedStatus] || dotClasses.Pending
+                    }`}
             />
 
             {normalizedStatus}

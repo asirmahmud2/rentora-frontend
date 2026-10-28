@@ -75,7 +75,7 @@ const MyProperties = async () => {
                             </p>
                         </div>
 
-                        <Link href="/dashboard/owner/add-property">
+                        <Link href="/dashboard/Owner/add-property">
                             <button
                                 type="button"
                                 className="group inline-flex h-11 items-center justify-center gap-3 bg-[#1A1A1A] px-5 font-sans text-[9px] uppercase tracking-[0.2em] text-white transition duration-300 hover:bg-[#8A6E68]"
@@ -118,7 +118,7 @@ const MyProperties = async () => {
                                 </p>
 
                                 <Link
-                                    href="/dashboard/owner/add-property"
+                                    href="/dashboard/Owner/add-property"
                                     className="mt-8 inline-flex items-center gap-2 font-sans text-[9px] uppercase tracking-[0.2em] text-[#1A1A1A] transition-colors hover:text-[#8A6E68]"
                                 >
                                     Add Your First Property
@@ -264,7 +264,7 @@ const MyProperties = async () => {
                                                     </span>
                                                     {Number(
                                                         property.propertySize ||
-                                                            0
+                                                        0
                                                     ).toLocaleString()}{" "}
                                                     {property.sizeUnit ||
                                                         "sqft"}
@@ -449,7 +449,7 @@ const MyProperties = async () => {
                                                     <span className="font-sans text-[8px] uppercase tracking-[0.12em] text-[#77716D]">
                                                         {Number(
                                                             property.propertySize ||
-                                                                0
+                                                            0
                                                         ).toLocaleString()}{" "}
                                                         {property.sizeUnit}
                                                     </span>

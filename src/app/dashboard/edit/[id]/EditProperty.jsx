@@ -479,7 +479,7 @@ const EditProperty = ({ id, property }) => {
                 throw new Error("Property not found.");
             }
 
-            
+
             setSuccessMessage(
                 "Property information has been prepared successfully."
             );
@@ -507,7 +507,7 @@ const EditProperty = ({ id, property }) => {
             <section className="border-b border-[#1A1A1A]/10 pb-8">
 
                 <Link
-                    href="/dashboard/admin/properties"
+                    href="/dashboard/Admin/properties"
                     className="mb-7 inline-flex items-center gap-2 font-sans text-[9px] uppercase tracking-[0.2em] text-[#77716D] transition-colors hover:text-[#8A6E68]"
                 >
                     <FiArrowLeft />
@@ -1039,7 +1039,7 @@ const EditProperty = ({ id, property }) => {
                             <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
 
                                 <Link
-                                    href="/dashboard/admin/properties"
+                                    href="/dashboard/Admin/properties"
                                     className="w-full sm:w-auto"
                                 >
                                     <Button

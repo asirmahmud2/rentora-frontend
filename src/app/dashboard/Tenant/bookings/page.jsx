@@ -32,8 +32,10 @@ const MyBooking = async ({ searchParams }) => {
     const { status = "All" } = await searchParams;
     const user = await getUser();
     const userId = user?.id;
-    const filtered = await getUserBooking(userId, status);
-    const allBookings = await getUserBooking(userId, "All");
+    const filtered = await getUserBooking(status);
+    console.log("MyBooking -> filtered", filtered);
+    const allBookings = await getUserBooking("All");
+    console.log("MyBooking -> allBookings", allBookings);
 
     // Attach the property to each booking
     const bookings = await Promise.all(
@@ -228,7 +230,7 @@ const MyBooking = async ({ searchParams }) => {
                                             {/* Action */}
                                             <div className="flex items-center border-t border-[#1A1A1A]/10 p-5 lg:border-l lg:border-t-0 lg:p-7">
                                                 <Link
-                                                    href={`/dashboard/tenant/bookings/${booking._id}`}
+                                                    href={`/dashboard/Tenant/bookings/${booking._id}`}
                                                     className="group/action flex w-full items-center justify-between gap-5 border border-[#1A1A1A]/10 px-5 py-4 transition-all duration-300 hover:border-[#8A6E68] hover:bg-[#F8F5F1] lg:w-auto"
                                                 >
                                                     <span className="font-sans text-[9px] uppercase tracking-[0.18em]">
@@ -271,7 +273,7 @@ const MyBooking = async ({ searchParams }) => {
                                     </Link>
 
                                     <Link
-                                        href="/dashboard/tenant/favorites"
+                                        href="/dashboard/Tenant/favorites"
                                         className="group inline-flex items-center justify-center gap-3 border border-[#1A1A1A]/10 px-6 py-4 font-sans text-[9px] uppercase tracking-[0.2em] transition-all duration-300 hover:border-[#8A6E68]"
                                     >
                                         View Favorites

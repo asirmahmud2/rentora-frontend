@@ -66,9 +66,8 @@ const AdminBookings = async () => {
                     {stats.map((item, index) => (
                         <div
                             key={item.label}
-                            className={`px-4 first:pl-0 sm:px-7 ${
-                                index !== stats.length - 1 ? "border-r border-[#1A1A1A]/10" : ""
-                            }`}
+                            className={`px-4 first:pl-0 sm:px-7 ${index !== stats.length - 1 ? "border-r border-[#1A1A1A]/10" : ""
+                                }`}
                         >
                             <p className="text-[10px] uppercase tracking-[0.2em] text-[#9B9690]">
                                 {item.label}
