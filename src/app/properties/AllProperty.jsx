@@ -11,6 +11,7 @@ import {
     Label,
     ListBox,
     Select,
+    toast,
 } from "@heroui/react";
 
 import {
@@ -24,12 +25,47 @@ import {
 
 import {
     AddFavorite,
-    checkFavorite,
     RemoveFavorite,
 } from "@/app/Server/Actions/Favorite";
 
-const AllPropertyDesign = ({ properties, filters, user }) => {
+const PROPERTY_TYPES = [
+    ["all", "All property types"],
+    ["Apartment", "Apartment"],
+    ["House", "House"],
+    ["Villa", "Villa"],
+    ["Studio", "Studio"],
+    ["Condo", "Condo"],
+    ["Townhouse", "Townhouse"],
+    ["Office", "Office"],
+];
+
+const SORT_OPTIONS = [
+    ["recommended", "Recommended"],
+    ["price-asc", "Price Low to High"],
+    ["price-desc", "Price High to Low"],
+];
+
+const formatRent = (rent) => `৳${Number(rent || 0).toLocaleString("en-BD")}`;
+
+const triggerClass =
+    "h-12 rounded-none border border-[#1A1A1A]/10 bg-[#FDFCF9] shadow-none";
+
+const popoverClass =
+    "rounded-none border border-[#1A1A1A]/10 bg-[#FDFCF9] shadow-none";
+
+const labelClass =
+    "mb-2 block font-sans text-[8px] uppercase tracking-[0.2em] text-[#5E5854]";
+
+const AllPropertyDesign = ({
+    properties,
+    filters,
+    user,
+    favoriteIds = [],
+}) => {
     const router = useRouter();
+
+    // Never crash if something other than a list arrives
+    const list = Array.isArray(properties) ? properties : [];
 
     const [location, setLocation] = useState(filters?.location || "");
     const [propertyType, setPropertyType] = useState(
@@ -37,126 +73,96 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
     );
     const [sort, setSort] = useState(filters?.sort || "");
 
-    const [favoriteStatuses, setFavoriteStatuses] = useState({});
+    // { propertyId: true } for every favorite. It starts from the ids the
+    // server page already loaded, so no extra requests are needed.
+    const [favoriteStatuses, setFavoriteStatuses] = useState(() =>
+        Object.fromEntries(favoriteIds.map((id) => [id, true]))
+    );
 
-    const formatRent = (rent) => {
-        return `৳${Number(rent || 0).toLocaleString("en-BD")}`;
-    };
+    // If the server sends a new list of favorites, use it
+    const favoriteKey = favoriteIds.join(",");
 
     useEffect(() => {
-        const favStatus = async () => {
-            if (!user?.id || !properties?.length) {
-                setFavoriteStatuses({});
-                return;
-            }
+        setFavoriteStatuses(
+            Object.fromEntries(favoriteIds.map((id) => [id, true]))
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [favoriteKey]);
 
-            const results = await Promise.all(
-                properties.map(async (property) => {
-                    const propertyId = property?._id?.toString();
-
-                    if (!propertyId) {
-                        return null;
-                    }
-
-                    try {
-                        const data = await checkFavorite(
-                            property._id,
-                            user.id
-                        );
-
-                        return [propertyId, Boolean(data)];
-                    } catch (error) {
-                        console.error(
-                            `Failed to check favorite for ${propertyId}:`,
-                            error
-                        );
-
-                        return [propertyId, false];
-                    }
-                })
-            );
-
-            const statusObject = Object.fromEntries(
-                results.filter(Boolean)
-            );
-
-            setFavoriteStatuses(statusObject);
-        };
-
-        favStatus();
-    }, [properties, user?.id]);
-
+    /* ---------- Favorites ---------- */
     const handleFavorite = async (property) => {
-
         const propertyId = property?._id?.toString();
 
-        if (!propertyId) {
+        if (!propertyId) return;
+
+        if (!user) {
+            router.push("/login");
             return;
         }
 
-        const isFavorite = Boolean(
-            favoriteStatuses[propertyId]
-        );
+        if (user.role !== "Tenant") {
+            toast.danger("Only tenants can save favorites.");
+            return;
+        }
+
+        const wasFavorite = Boolean(favoriteStatuses[propertyId]);
+
+        // Change the heart immediately, before the server answers
+        setFavoriteStatuses((prev) => ({
+            ...prev,
+            [propertyId]: !wasFavorite,
+        }));
 
         try {
-            if (!isFavorite) {
-                const newFavorite = {
-                    ...property,
-                    propertyId: property._id,
-                    userId: user.id,
-                };
+            let response;
 
-                const response = await AddFavorite(
-                    newFavorite,
-                    user.id
-                );
-
-                if (!response.ok) {
-                    throw new Error("Failed to add favorite");
-                }
-
-                setFavoriteStatuses((prev) => ({
-                    ...prev,
-                    [propertyId]: true,
-                }));
-
-                console.log("Added favorite:", response.data);
+            if (wasFavorite) {
+                response = await RemoveFavorite(property._id, user.id);
             } else {
-                const response = await RemoveFavorite(
-                    property._id,
+                // Leave out the property's own _id so it does not
+                // become the favorite's _id
+                const { _id, ...rest } = property;
+
+                response = await AddFavorite(
+                    { ...rest, propertyId: _id, userId: user.id },
                     user.id
                 );
-
-                if (!response.ok) {
-                    throw new Error("Failed to remove favorite");
-                }
-
-                setFavoriteStatuses((prev) => ({
-                    ...prev,
-                    [propertyId]: false,
-                }));
-
-                console.log("Removed favorite:", response.data);
             }
+
+            toast.success(
+                wasFavorite
+                    ? "Removed from favorites!"
+                    : "Added to favorites!"
+            );
         } catch (error) {
             console.error("Favorite error:", error);
+
+            // Put the heart back, because the server did not save the change
+            setFavoriteStatuses((prev) => ({
+                ...prev,
+                [propertyId]: wasFavorite,
+            }));
+
+            toast.danger("Could not update favorites. Please try again.");
         }
     };
 
-    /*
-     * Push the selected Property Type directly to the URL.
-     */
+    /* ---------- Filters ---------- */
+    const goTo = (searchParams) => {
+        const queryString = searchParams.toString();
+
+        router.push(
+            queryString ? `/properties?${queryString}` : "/properties"
+        );
+    };
+
+    // Property type: update the URL right away
     const handlePropertyTypeChange = (value) => {
-        const nextValue =
-            value === "all"
-                ? ""
-                : value || "";
+        const nextValue = value === "all" ? "" : value || "";
 
         setPropertyType(nextValue);
 
-        const searchParams = new URLSearchParams(
-            window.location.search
-        );
+        const searchParams = new URLSearchParams(window.location.search);
 
         if (nextValue) {
             searchParams.set("propertyType", nextValue);
@@ -164,29 +170,16 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
             searchParams.delete("propertyType");
         }
 
-        const queryString = searchParams.toString();
-
-        if (queryString) {
-            router.push(`/properties?${queryString}`);
-        } else {
-            router.push("/properties");
-        }
+        goTo(searchParams);
     };
 
-    /*
-     * Push the selected Sort option directly to the URL.
-     */
+    // Sort: update the URL right away
     const handleSortChange = (value) => {
-        const nextValue =
-            value === "recommended"
-                ? ""
-                : value || "";
+        const nextValue = value === "recommended" ? "" : value || "";
 
         setSort(nextValue);
 
-        const searchParams = new URLSearchParams(
-            window.location.search
-        );
+        const searchParams = new URLSearchParams(window.location.search);
 
         if (nextValue) {
             searchParams.set("sort", nextValue);
@@ -194,31 +187,19 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
             searchParams.delete("sort");
         }
 
-        const queryString = searchParams.toString();
-
-        if (queryString) {
-            router.push(`/properties?${queryString}`);
-        } else {
-            router.push("/properties");
-        }
+        goTo(searchParams);
     };
 
+    // Search button: build the URL from the whole form
+    // Changing the URL makes the server page run again with the new values
     const handleFilterSubmit = (event) => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
 
-        const locationValue = String(
-            formData.get("location") || ""
-        ).trim();
-
-        const propertyTypeValue = String(
-            formData.get("propertyType") || ""
-        );
-
-        const sortValue = String(
-            formData.get("sort") || ""
-        );
+        const locationValue = String(formData.get("location") || "").trim();
+        const propertyTypeValue = String(formData.get("propertyType") || "");
+        const sortValue = String(formData.get("sort") || "");
 
         const searchParams = new URLSearchParams();
 
@@ -226,63 +207,34 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
             searchParams.set("location", locationValue);
         }
 
-        if (
-            propertyTypeValue &&
-            propertyTypeValue !== "all"
-        ) {
-            searchParams.set(
-                "propertyType",
-                propertyTypeValue
-            );
+        if (propertyTypeValue && propertyTypeValue !== "all") {
+            searchParams.set("propertyType", propertyTypeValue);
         }
 
-        if (
-            sortValue &&
-            sortValue !== "recommended"
-        ) {
+        if (sortValue && sortValue !== "recommended") {
             searchParams.set("sort", sortValue);
         }
 
-        const queryString = searchParams.toString();
-
-        /*
-         * Changing the URL causes the Server Component to
-         * run again with the new filter values.
-         */
-        if (queryString) {
-            router.push(`/properties?${queryString}`);
-        } else {
-            router.push("/properties");
-        }
+        goTo(searchParams);
     };
 
-    /*
-     * Reset every filter and return to the original
-     * approved-property collection.
-     */
     const handleClearFilters = () => {
         setLocation("");
         setPropertyType("");
         setSort("");
-        setFavoriteStatuses({});
 
         router.push("/properties");
     };
 
     const hasActiveFilters =
-        Boolean(location) ||
-        Boolean(propertyType) ||
-        Boolean(sort);
+        Boolean(location) || Boolean(propertyType) || Boolean(sort);
 
     return (
         <main>
-            {/* =========================================================
-                PAGE HERO
-            ========================================================= */}
+            {/* PAGE HERO */}
             <section className="border-b border-[#1A1A1A]/10 py-10 sm:py-14 lg:py-20">
                 <div className="container mx-auto">
                     <div className="grid items-end gap-8 lg:grid-cols-[1.3fr_0.7fr]">
-                        {/* Left */}
                         <div>
                             <div className="mb-5 flex items-center gap-4">
                                 <span className="h-px w-10 bg-[#8A6E68]" />
@@ -305,7 +257,6 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                             </p>
                         </div>
 
-                        {/* Right */}
                         <div className="lg:flex lg:justify-end">
                             <div className="max-w-xs border-l border-[#8A6E68] pl-5">
                                 <p className="font-sans text-[8px] uppercase tracking-[0.25em] text-[#A09A95]">
@@ -313,10 +264,7 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                 </p>
 
                                 <p className="mt-2 font-serif text-4xl text-[#1A1A1A] sm:text-5xl">
-                                    {String(properties.length).padStart(
-                                        2,
-                                        "0"
-                                    )}
+                                    {String(list.length).padStart(2, "0")}
                                 </p>
 
                                 <p className="mt-2 font-serif text-sm leading-6 text-[#817A75]">
@@ -329,13 +277,10 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                 </div>
             </section>
 
-            {/* =========================================================
-                FILTER SECTION
-            ========================================================= */}
+            {/* FILTER SECTION */}
             <section className="border-b border-[#1A1A1A]/10 py-6 sm:py-8">
                 <div className="container mx-auto">
                     <div className="bg-[#EEE9E4] px-5 py-6 sm:px-7 sm:py-7 lg:px-8">
-                        {/* Filter Heading */}
                         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div className="flex items-center gap-4">
                                 <span className="flex h-8 w-8 items-center justify-center bg-[#8A6E68] text-white">
@@ -365,19 +310,13 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                             )}
                         </div>
 
-                        {/* Filter Form */}
                         <form
                             onSubmit={handleFilterSubmit}
                             className="grid gap-4 lg:grid-cols-[1.5fr_1fr_1fr_auto]"
                         >
-                            {/* =================================================
-                                LOCATION
-                            ================================================= */}
+                            {/* Location */}
                             <div className="min-w-0">
-                                <Label
-                                    htmlFor="location"
-                                    className="mb-2 block font-sans text-[8px] uppercase tracking-[0.2em] text-[#5E5854]"
-                                >
+                                <Label htmlFor="location" className={labelClass}>
                                     Location
                                 </Label>
 
@@ -390,9 +329,7 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                         type="text"
                                         value={location}
                                         onChange={(event) =>
-                                            setLocation(
-                                                event.target.value
-                                            )
+                                            setLocation(event.target.value)
                                         }
                                         placeholder="Search by area or city"
                                         variant="secondary"
@@ -401,13 +338,9 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                 </div>
                             </div>
 
-                            {/* =================================================
-                                PROPERTY TYPE
-                            ================================================= */}
+                            {/* Property type */}
                             <div className="min-w-0">
-                                <Label className="mb-2 block font-sans text-[8px] uppercase tracking-[0.2em] text-[#5E5854]">
-                                    Property Type
-                                </Label>
+                                <Label className={labelClass}>Property Type</Label>
 
                                 <Select
                                     name="propertyType"
@@ -417,91 +350,32 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                     variant="secondary"
                                     className="w-full"
                                 >
-                                    <Select.Trigger className="h-12 rounded-none border border-[#1A1A1A]/10 bg-[#FDFCF9] shadow-none">
+                                    <Select.Trigger className={triggerClass}>
                                         <Select.Value />
-
                                         <Select.ClearButton />
-
                                         <Select.Indicator />
                                     </Select.Trigger>
 
-                                    <Select.Popover className="rounded-none border border-[#1A1A1A]/10 bg-[#FDFCF9] shadow-none">
+                                    <Select.Popover className={popoverClass}>
                                         <ListBox>
-                                            <ListBox.Item
-                                                id="all"
-                                                textValue="All property types"
-                                            >
-                                                All property types
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="Apartment"
-                                                textValue="Apartment"
-                                            >
-                                                Apartment
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="House"
-                                                textValue="House"
-                                            >
-                                                House
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="Villa"
-                                                textValue="Villa"
-                                            >
-                                                Villa
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="Studio"
-                                                textValue="Studio"
-                                            >
-                                                Studio
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="Condo"
-                                                textValue="Condo"
-                                            >
-                                                Condo
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="Townhouse"
-                                                textValue="Townhouse"
-                                            >
-                                                Townhouse
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="Office"
-                                                textValue="Office"
-                                            >
-                                                Office
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
+                                            {PROPERTY_TYPES.map(([id, label]) => (
+                                                <ListBox.Item
+                                                    key={id}
+                                                    id={id}
+                                                    textValue={label}
+                                                >
+                                                    {label}
+                                                    <ListBox.ItemIndicator />
+                                                </ListBox.Item>
+                                            ))}
                                         </ListBox>
                                     </Select.Popover>
                                 </Select>
                             </div>
 
-                            {/* =================================================
-                                SORT
-                            ================================================= */}
+                            {/* Sort */}
                             <div className="min-w-0">
-                                <Label className="mb-2 block font-sans text-[8px] uppercase tracking-[0.2em] text-[#5E5854]">
-                                    Sort By
-                                </Label>
+                                <Label className={labelClass}>Sort By</Label>
 
                                 <Select
                                     name="sort"
@@ -511,47 +385,30 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                     variant="secondary"
                                     className="w-full"
                                 >
-                                    <Select.Trigger className="h-12 rounded-none border border-[#1A1A1A]/10 bg-[#FDFCF9] shadow-none">
+                                    <Select.Trigger className={triggerClass}>
                                         <Select.Value />
-
                                         <Select.ClearButton />
-
                                         <Select.Indicator />
                                     </Select.Trigger>
 
-                                    <Select.Popover className="rounded-none border border-[#1A1A1A]/10 bg-[#FDFCF9] shadow-none">
+                                    <Select.Popover className={popoverClass}>
                                         <ListBox>
-                                            <ListBox.Item
-                                                id="recommended"
-                                                textValue="Recommended"
-                                            >
-                                                Recommended
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="price-asc"
-                                                textValue="Price Low to High"
-                                            >
-                                                Price Low to High
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
-
-                                            <ListBox.Item
-                                                id="price-desc"
-                                                textValue="Price High to Low"
-                                            >
-                                                Price High to Low
-                                                <ListBox.ItemIndicator />
-                                            </ListBox.Item>
+                                            {SORT_OPTIONS.map(([id, label]) => (
+                                                <ListBox.Item
+                                                    key={id}
+                                                    id={id}
+                                                    textValue={label}
+                                                >
+                                                    {label}
+                                                    <ListBox.ItemIndicator />
+                                                </ListBox.Item>
+                                            ))}
                                         </ListBox>
                                     </Select.Popover>
                                 </Select>
                             </div>
 
-                            {/* =================================================
-                                SEARCH BUTTON
-                            ================================================= */}
+                            {/* Search button */}
                             <div className="flex items-end">
                                 <Button
                                     type="submit"
@@ -559,15 +416,13 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                     className="h-12 w-full rounded-none bg-[#1A1A1A] px-6 font-sans text-[9px] uppercase tracking-[0.2em] text-white transition duration-300 hover:bg-[#8A6E68] lg:w-auto"
                                 >
                                     <FiSearch className="text-sm" />
-
                                     Search
-
                                     <FiArrowUpRight className="text-sm" />
                                 </Button>
                             </div>
                         </form>
 
-                        {/* Active Filter Summary */}
+                        {/* Active filter summary */}
                         {hasActiveFilters && (
                             <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[#1A1A1A]/10 pt-4">
                                 <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-[#9A938E]">
@@ -603,9 +458,7 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                 </div>
             </section>
 
-            {/* =========================================================
-                COLLECTION COUNT
-            ========================================================= */}
+            {/* COLLECTION COUNT */}
             <section className="container mx-auto flex flex-col gap-4 border-b border-[#1A1A1A]/10 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-4">
                     <span className="font-sans text-[8px] uppercase tracking-[0.25em] text-[#A09A95]">
@@ -615,10 +468,7 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                     <span className="h-px w-6 bg-[#8A6E68]" />
 
                     <span className="font-serif text-sm text-[#5F5854]">
-                        {properties.length}{" "}
-                        {properties.length === 1
-                            ? "property"
-                            : "properties"}
+                        {list.length} {list.length === 1 ? "property" : "properties"}
                     </span>
                 </div>
 
@@ -627,11 +477,9 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                 </p>
             </section>
 
-            {/* =========================================================
-                EMPTY STATE
-            ========================================================= */}
             <div className="container mx-auto">
-                {properties.length === 0 ? (
+                {list.length === 0 ? (
+                    /* EMPTY STATE */
                     <section className="py-20 sm:py-28">
                         <div className="relative overflow-hidden bg-[#EEE9E4] px-6 py-16 text-center sm:px-10">
                             <span
@@ -667,29 +515,21 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                         </div>
                     </section>
                 ) : (
-                    /* =====================================================
-                       PROPERTY GRID
-                    ===================================================== */
+                    /* PROPERTY GRID */
                     <section className="py-8 sm:py-10 lg:py-14">
                         <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-7 lg:gap-y-16">
-                            {properties.map((property, index) => {
-                                const propertyId =
-                                    property._id?.toString();
-
-                                const isFavorite =
-                                    Boolean(
-                                        favoriteStatuses[propertyId]
-                                    );
+                            {list.map((property, index) => {
+                                const propertyId = property._id?.toString();
+                                const isFavorite = Boolean(
+                                    favoriteStatuses[propertyId]
+                                );
 
                                 return (
                                     <article
-                                        key={
-                                            propertyId ||
-                                            `property-${index}`
-                                        }
+                                        key={propertyId || `property-${index}`}
                                         className="group min-w-0"
                                     >
-                                        {/* IMAGE */}
+                                        {/* Image */}
                                         <div className="relative">
                                             <Link
                                                 href={`/properties/${propertyId}`}
@@ -697,13 +537,8 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                             >
                                                 {property.images?.[0] ? (
                                                     <Image
-                                                        src={
-                                                            property.images[0]
-                                                        }
-                                                        alt={
-                                                            property.title ||
-                                                            "Property image"
-                                                        }
+                                                        src={property.images[0]}
+                                                        alt={property.title || "Property image"}
                                                         fill
                                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                                         className="object-cover transition-transform duration-700 ease-out group-hover/image:scale-105"
@@ -721,18 +556,13 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
 
                                             {/* Number */}
                                             <span className="absolute left-4 top-4 bg-[#FDFCF9]/90 px-2.5 py-1.5 font-sans text-[8px] tracking-[0.15em] text-[#8A6E68] backdrop-blur-sm">
-                                                {String(index + 1).padStart(
-                                                    2,
-                                                    "0"
-                                                )}
+                                                {String(index + 1).padStart(2, "0")}
                                             </span>
 
                                             {/* Favorite */}
                                             <button
                                                 type="button"
-                                                onClick={() =>
-                                                    handleFavorite(property)
-                                                }
+                                                onClick={() => handleFavorite(property)}
                                                 aria-label={
                                                     isFavorite
                                                         ? "Remove from favorites"
@@ -741,16 +571,12 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                                 className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center bg-[#FDFCF9]/90 text-[#6D6661] backdrop-blur-sm transition-colors duration-300 hover:bg-[#8A6E68] hover:text-white"
                                             >
                                                 <FiHeart
-                                                    className={`text-sm ${
-                                                        isFavorite
-                                                            ? "fill-current"
-                                                            : ""
-                                                    }`}
+                                                    className={`text-sm ${isFavorite ? "fill-current" : ""}`}
                                                 />
                                             </button>
                                         </div>
 
-                                        {/* CONTENT */}
+                                        {/* Content */}
                                         <div className="pt-5">
                                             <div className="flex items-center justify-between gap-3">
                                                 <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-[#8A6E68]">
@@ -775,15 +601,7 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                                 <FiMapPin className="shrink-0 text-xs text-[#8A6E68]" />
 
                                                 <p className="truncate font-serif text-sm text-[#77716D]">
-                                                    {
-                                                        property.location
-                                                            ?.area
-                                                    }
-                                                    ,{" "}
-                                                    {
-                                                        property.location
-                                                            ?.city
-                                                    }
+                                                    {property.location?.area}, {property.location?.city}
                                                 </p>
                                             </div>
 
@@ -792,43 +610,30 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                                             <div className="flex items-end justify-between gap-4">
                                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                                                     <span className="font-sans text-[8px] uppercase tracking-[0.12em] text-[#6F6863]">
-                                                        {property.bedrooms}{" "}
-                                                        Bed
+                                                        {property.bedrooms} Bed
                                                     </span>
 
                                                     <span className="h-3 w-px bg-[#1A1A1A]/15" />
 
                                                     <span className="font-sans text-[8px] uppercase tracking-[0.12em] text-[#6F6863]">
-                                                        {property.bathrooms}{" "}
-                                                        Bath
+                                                        {property.bathrooms} Bath
                                                     </span>
 
                                                     <span className="h-3 w-px bg-[#1A1A1A]/15" />
 
                                                     <span className="font-sans text-[8px] uppercase tracking-[0.12em] text-[#6F6863]">
-                                                        {Number(
-                                                            property.propertySize ||
-                                                                0
-                                                        ).toLocaleString()}{" "}
-                                                        {
-                                                            property.sizeUnit ||
-                                                            "sqft"
-                                                        }
+                                                        {Number(property.propertySize || 0).toLocaleString()}{" "}
+                                                        {property.sizeUnit || "sqft"}
                                                     </span>
                                                 </div>
 
                                                 <div className="shrink-0 text-right">
                                                     <p className="font-serif text-xl leading-none text-[#1A1A1A]">
-                                                        {formatRent(
-                                                            property.rent
-                                                        )}
+                                                        {formatRent(property.rent)}
                                                     </p>
 
                                                     <p className="mt-1 font-sans text-[8px] uppercase tracking-[0.1em] text-[#A09A95]">
-                                                        /{" "}
-                                                        {
-                                                            property.rentType
-                                                        }
+                                                        / {property.rentType}
                                                     </p>
                                                 </div>
                                             </div>
@@ -852,9 +657,7 @@ const AllPropertyDesign = ({ properties, filters, user }) => {
                 )}
             </div>
 
-            {/* =========================================================
-                BOTTOM EDITORIAL CTA
-            ========================================================= */}
+            {/* BOTTOM CTA */}
             <section className="border-t border-[#1A1A1A]/10 py-12 sm:py-16">
                 <div className="container mx-auto">
                     <div className="flex flex-col gap-5 text-center">

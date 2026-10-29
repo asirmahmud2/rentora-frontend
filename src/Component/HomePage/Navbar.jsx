@@ -21,7 +21,7 @@ import { authClient } from "@/lib/auth-client";
 const Navbar = () => {
     const pathname = usePathname();
 
-    const [isMenuOpen, FmobsetIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Better Auth session
     const { data: session } = authClient.useSession();
@@ -339,7 +339,7 @@ const Navbar = () => {
                                 {/* Dashboard - ONLY WHEN LOGGED IN */}
                                 {isLoggedIn && (
                                     <Link
-                                        href="/dashboard"
+                                        href={`/dashboard/${role}`}
                                         onClick={closeMobileMenu}
                                         className="group flex items-center justify-between border-b border-black/10 py-4"
                                     >
@@ -427,7 +427,7 @@ const Navbar = () => {
 
                                         {/* Dashboard */}
                                         <Link
-                                            href="/dashboard"
+                                            href={`/dashboard/${role}`}
                                             onClick={closeMobileMenu}
                                             className="flex w-full items-center justify-between border-b border-black/10 py-3 font-sans text-[10px] uppercase tracking-[0.2em] text-[#33302E]"
                                         >

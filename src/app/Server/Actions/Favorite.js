@@ -1,16 +1,31 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { ServerMutation, ServerQuery } from "../core/server";
 
 export const AddFavorite = async (data, userId) => {
-    return ServerMutation(`/api/favorite?userId=${userId}`, data);
+    const res = await ServerMutation(`/api/favorite?userId=${userId}`, data);
+
+    if (res.ok) {
+        revalidatePath("/dashboard/Tenant/favorites");
+        revalidatePath("/properties", "layout");
+    }
+
+    return res;
 };
 
 export const RemoveFavorite = async (propertyId, userId) => {
-    return ServerQuery(
+    const res = await ServerQuery(
         `/api/favorite/${propertyId}?userId=${userId}`,
         "DELETE"
     );
+
+    if (res.ok) {
+        revalidatePath("/dashboard/Tenant/favorites");
+        revalidatePath("/properties", "layout");
+    }
+
+    return res;
 };
 
 export const GetFavorites = async (userId) => {

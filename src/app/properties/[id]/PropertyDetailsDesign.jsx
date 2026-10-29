@@ -58,14 +58,12 @@ const PropertyDetailsDesign = ({ property, user, reviews = [] }) => {
                 const newFavorite = { ...rest, propertyId: _id, userId: user.id };
 
                 const response = await AddFavorite(newFavorite, user.id);
-                if (!response.ok) throw new Error("Failed to add favorite");
 
                 toast.success("Property added to favorites!");
                 setIsFavorite(true);
             } else {
                 const response = await RemoveFavorite(property._id, user.id);
-                if (!response.ok) throw new Error("Failed to remove favorite");
-
+                toast.success("Property removed from favorites!");
                 setIsFavorite(false);
             }
         } catch (error) {
