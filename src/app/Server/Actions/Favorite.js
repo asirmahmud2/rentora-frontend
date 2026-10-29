@@ -19,11 +19,8 @@ export const RemoveFavorite = async (propertyId, userId) => {
         `/api/favorite/${propertyId}?userId=${userId}`,
         "DELETE"
     );
-
-    if (res.ok) {
-        revalidatePath("/dashboard/Tenant/favorites");
-        revalidatePath("/properties", "layout");
-    }
+    revalidatePath("/dashboard/Tenant/favorites");
+    revalidatePath("/properties", "layout");
 
     return res;
 };
